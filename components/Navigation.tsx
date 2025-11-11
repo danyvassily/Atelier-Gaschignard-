@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react'
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('accueil')
-  // Chemin direct vers le logo - pas besoin de useEffect ni de chemin absolu
-  const logoPath = '/images/logo.png'
+  // Utiliser le logo à la racine de public pour éviter l'optimiseur Next.js
+  const logoPath = '/logo.png'
 
   // Fonction pour scroller vers une section
   const scrollToSection = (id: string, e?: React.MouseEvent<HTMLAnchorElement>) => {
@@ -95,13 +95,10 @@ const Navigation = () => {
                   height={96}
                   className="w-full h-full object-contain"
                   loading="eager"
+                  // Désactiver srcset pour éviter l'optimiseur Next.js
+                  srcSet=""
                   onError={(e) => {
-                    // Fallback si l'image ne charge pas
-                    console.error('Logo failed to load')
-                    // Essayer avec le chemin relatif en fallback
-                    if (e.currentTarget.src !== '/images/logo.png') {
-                      e.currentTarget.src = '/images/logo.png'
-                    }
+                    console.error('Logo failed to load from:', e.currentTarget.src)
                   }}
                 />
               </div>
@@ -164,13 +161,10 @@ const Navigation = () => {
                   height={64}
                   className="w-full h-full object-contain"
                   loading="eager"
+                  // Désactiver srcset pour éviter l'optimiseur Next.js
+                  srcSet=""
                   onError={(e) => {
-                    // Fallback si l'image ne charge pas
-                    console.error('Logo failed to load')
-                    // Essayer avec le chemin relatif en fallback
-                    if (e.currentTarget.src !== '/images/logo.png') {
-                      e.currentTarget.src = '/images/logo.png'
-                    }
+                    console.error('Logo failed to load from:', e.currentTarget.src)
                   }}
                 />
               </div>
