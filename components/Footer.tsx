@@ -13,7 +13,7 @@ const Footer = () => {
           <div>
             <h3 className="font-serif text-xl mb-4">Atelier Gaschignard</h3>
             <p className="text-sm text-primary-300 leading-relaxed">
-              Cuisine d'exception et savoir-faire artisanal
+              Cuisine d&apos;exception et savoir-faire artisanal
             </p>
           </div>
 

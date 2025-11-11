@@ -71,7 +71,7 @@ export default function Home() {
             ref={subtitleRef}
             className="text-lg md:text-xl lg:text-2xl mb-8 md:mb-12 max-w-2xl mx-auto font-light"
           >
-            Cuisine d'exception et savoir-faire artisanal
+            Cuisine d&apos;exception et savoir-faire artisanal
           </p>
           <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -103,11 +103,11 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
             <div className="space-y-6">
               <h2 className="font-serif text-4xl md:text-5xl text-primary-900">
-                L'art de la gastronomie
+                L&apos;art de la gastronomie
               </h2>
               <p className="text-primary-700 leading-relaxed text-lg">
                 {/* Le contenu sera ajouté après lecture des documents PDF/PPTX */}
-                Découvrez l'excellence culinaire à travers nos créations uniques, 
+                Découvrez l&apos;excellence culinaire à travers nos créations uniques, 
                 où chaque plat raconte une histoire et chaque saveur révèle notre passion.
               </p>
               <p className="text-primary-700 leading-relaxed text-lg">

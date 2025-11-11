@@ -93,8 +93,8 @@ export default function Contact() {
                 </h2>
                 <p className="text-primary-700 leading-relaxed text-lg mb-8">
                   {/* Le contenu sera complété après lecture des documents */}
-                  Nous serions ravis d'échanger avec vous sur votre projet culinaire.
-                  N'hésitez pas à nous contacter pour toute demande.
+                  Nous serions ravis d&apos;échanger avec vous sur votre projet culinaire.
+                  N&apos;hésitez pas à nous contacter pour toute demande.
                 </p>
               </div>
 
