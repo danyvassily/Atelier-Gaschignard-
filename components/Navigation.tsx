@@ -5,6 +5,18 @@ import { useEffect, useState } from 'react'
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('accueil')
+  const [logoPath, setLogoPath] = useState('/images/logo.png')
+  
+  // Utiliser useEffect pour définir le chemin absolu après le montage
+  // Cela évite que Next.js/Vercel intercepte la requête via l'optimiseur
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Utiliser un chemin absolu pour contourner l'optimiseur Next.js
+      // Ajouter un paramètre de cache-busting pour forcer le rechargement
+      const absolutePath = `${window.location.origin}/images/logo.png?v=1`
+      setLogoPath(absolutePath)
+    }
+  }, [])
 
   // Fonction pour scroller vers une section
   const scrollToSection = (id: string, e?: React.MouseEvent<HTMLAnchorElement>) => {
@@ -87,7 +99,7 @@ const Navigation = () => {
               <div className="h-20 w-20 lg:h-24 lg:w-24 relative flex-shrink-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
-                  src="/images/logo.png"
+                  src={logoPath}
                   alt="Atelier Gaschignard" 
                   width={96}
                   height={96}
@@ -96,6 +108,10 @@ const Navigation = () => {
                   onError={(e) => {
                     // Fallback si l'image ne charge pas
                     console.error('Logo failed to load')
+                    // Essayer avec le chemin relatif en fallback
+                    if (e.currentTarget.src !== '/images/logo.png') {
+                      e.currentTarget.src = '/images/logo.png'
+                    }
                   }}
                 />
               </div>
@@ -152,7 +168,7 @@ const Navigation = () => {
               <div className="h-16 w-16 relative flex-shrink-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
-                  src="/images/logo.png"
+                  src={logoPath}
                   alt="Atelier Gaschignard" 
                   width={64}
                   height={64}
@@ -161,6 +177,10 @@ const Navigation = () => {
                   onError={(e) => {
                     // Fallback si l'image ne charge pas
                     console.error('Logo failed to load')
+                    // Essayer avec le chemin relatif en fallback
+                    if (e.currentTarget.src !== '/images/logo.png') {
+                      e.currentTarget.src = '/images/logo.png'
+                    }
                   }}
                 />
               </div>
