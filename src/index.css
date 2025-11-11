@@ -1,0 +1,153 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-raleway: 'Raleway', 'Bebas Neue', sans-serif;
+  --font-manrope: 'Manrope', system-ui, -apple-system, sans-serif;
+  --font-bebas: 'Bebas Neue', sans-serif;
+  /* Couleur du logo - À mettre à jour avec la valeur hex exacte du logo */
+  --color-brand-primary: #3d352e;
+  /* Couleur du texte = couleur du logo */
+  --color-text-primary: var(--color-brand-primary);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-manrope);
+  color: #ffffff;
+  background-color: #0a0a0a;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Couleur du texte = couleur du logo (pour les liens et éléments interactifs) */
+.text-brand {
+  color: var(--color-text-primary);
+}
+
+/* Corps de texte en Manrope */
+.text-body {
+  font-family: var(--font-manrope);
+  color: #e5e5e5;
+}
+
+/* Titres en Raleway majuscules */
+.text-heading {
+  font-family: var(--font-raleway);
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-raleway);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* Fallback pour titres si Raleway gras ne fonctionne pas */
+@supports not (font-variation-settings: normal) {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-bebas);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Utilities */
+.container-custom {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container-custom {
+    padding: 0 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-custom {
+    padding: 0 4rem;
+  }
+}
+
+/* Smooth transitions */
+.transition-smooth {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Micro-interactions pour navigation */
+.nav-link-hover {
+  transition: opacity 0.2s ease-out, color 0.2s ease-out;
+}
+
+.nav-link-hover:hover {
+  opacity: 0.8;
+}
+
+/* Touch-friendly pour mobile */
+.touch-manipulation {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Scrolling fluide */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Animation fade-in pour lightbox */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
+/* Hide scrollbar but keep functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+

@@ -1,0 +1,51 @@
+# Fichiers et dossiers à ignorer lors du déploiement sur Vercel
+
+# Dossiers de développement
+node_modules/
+.next/
+dist/
+.vscode/
+.idea/
+
+# Fichiers de configuration locaux
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Fichiers de documentation et de développement
+*.md
+!README.md
+ARBORESCENCE.md
+CHECKLIST-QA.md
+CONTENU-A-INTEGRER.md
+DESIGN-SYSTEM.md
+INVENTAIRE-ASSETS.md
+NAVIGATION-UX.md
+PLAN-INTEGRATION.md
+RAPPORT-ACCESSIBILITE.md
+RECAP-VITE.md
+RESUME.md
+VERIFICATION-TEXTES.md
+
+# Fichiers sources Vite (non utilisés pour Next.js)
+src/
+vite.config.ts
+index.html
+
+# Fichiers Python
+*.py
+extract-content.py
+
+# Fichiers de ressources non utilisés
+Photos d_illustration/
+Présentation Canva.pdf
+Texte.pptx
+Logo.png
+
+# Fichiers de logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
