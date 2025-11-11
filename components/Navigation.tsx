@@ -5,18 +5,8 @@ import { useEffect, useState } from 'react'
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('accueil')
-  const [logoPath, setLogoPath] = useState('/images/logo.png')
-  
-  // Utiliser useEffect pour définir le chemin absolu après le montage
-  // Cela évite que Next.js/Vercel intercepte la requête via l'optimiseur
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Utiliser un chemin absolu pour contourner l'optimiseur Next.js
-      // Ajouter un paramètre de cache-busting pour forcer le rechargement
-      const absolutePath = `${window.location.origin}/images/logo.png?v=1`
-      setLogoPath(absolutePath)
-    }
-  }, [])
+  // Chemin direct vers le logo - pas besoin de useEffect ni de chemin absolu
+  const logoPath = '/images/logo.png'
 
   // Fonction pour scroller vers une section
   const scrollToSection = (id: string, e?: React.MouseEvent<HTMLAnchorElement>) => {
