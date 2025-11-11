@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -93,15 +92,14 @@ const Navigation = () => {
               aria-label="Retour à l'accueil"
             >
               <div className="h-20 w-20 lg:h-24 lg:w-24 relative flex-shrink-0">
-                <Image 
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img 
                   src="/images/logo.png"
                   alt="Atelier Gaschignard" 
                   width={96}
                   height={96}
-                  className="object-contain"
-                  style={{ width: '100%', height: '100%' }}
-                  priority
-                  unoptimized
+                  className="w-full h-full object-contain"
+                  loading="eager"
                 />
               </div>
             </a>
@@ -155,15 +153,14 @@ const Navigation = () => {
               aria-label="Retour à l'accueil"
             >
               <div className="h-16 w-16 relative flex-shrink-0">
-                <Image 
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img 
                   src="/images/logo.png"
                   alt="Atelier Gaschignard" 
                   width={64}
                   height={64}
-                  className="object-contain"
-                  style={{ width: '100%', height: '100%' }}
-                  priority
-                  unoptimized
+                  className="w-full h-full object-contain"
+                  loading="eager"
                 />
               </div>
             </a>
