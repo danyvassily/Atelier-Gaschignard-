@@ -94,13 +94,14 @@ const Navigation = () => {
             >
               <div className="h-20 w-20 lg:h-24 lg:w-24 relative flex-shrink-0">
                 <Image 
-                  src="/images/logo.png" 
+                  src="/images/logo.png"
                   alt="Atelier Gaschignard" 
                   width={96}
                   height={96}
                   className="object-contain"
                   style={{ width: '100%', height: '100%' }}
                   priority
+                  unoptimized
                 />
               </div>
             </a>
@@ -155,13 +156,14 @@ const Navigation = () => {
             >
               <div className="h-16 w-16 relative flex-shrink-0">
                 <Image 
-                  src="/images/logo.png" 
+                  src="/images/logo.png"
                   alt="Atelier Gaschignard" 
                   width={64}
                   height={64}
                   className="object-contain"
                   style={{ width: '100%', height: '100%' }}
                   priority
+                  unoptimized
                 />
               </div>
             </a>
