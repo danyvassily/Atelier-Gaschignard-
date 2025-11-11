@@ -135,20 +135,19 @@ export default function Home() {
     }
 
     // Animation de déstructuration avec parallaxe lors de la sortie de la section galerie
+    // Désactivée pour éviter que la galerie disparaisse au scroll arrière
+    // Si vous souhaitez réactiver cette animation, décommentez le code ci-dessous
+    /*
     if (gallerySectionRef.current && galleryRef.current) {
       const items = galleryRef.current.querySelectorAll('.gallery-item')
       
-      // Créer un effet parallaxe avec différentes vitesses pour chaque élément
       items.forEach((item, index) => {
-        // Attribuer une vitesse différente à chaque élément pour créer l'effet parallaxe
-        // Les vitesses varient entre 0.2 et 0.8 pour un effet plus prononcé
         const speed = 0.2 + (index % 5) * 0.15
         const rotation = (index % 2 === 0 ? 1 : -1) * (10 + (index % 4) * 8)
         const xOffset = (index % 3 === 0 ? 1 : index % 3 === 1 ? -1 : 0) * (80 + (index % 5) * 40)
         
-        // Animation de déstructuration avec parallaxe
         gsap.to(item, {
-          y: (1 - speed) * 400, // Effet parallaxe vertical plus prononcé
+          y: (1 - speed) * 400,
           x: xOffset,
           rotation: rotation,
           opacity: 0,
@@ -156,14 +155,16 @@ export default function Home() {
           ease: 'power2.in',
           scrollTrigger: {
             trigger: gallerySectionRef.current,
-            start: 'bottom top', // Démarre quand le bas de la section atteint le haut de la fenêtre
-            end: 'bottom top-=300', // Zone d'animation plus large
-            scrub: 0.5, // Animation plus fluide liée au scroll
-            invalidateOnRefresh: true
+            start: 'bottom top',
+            end: 'bottom top-=300',
+            scrub: 0.5,
+            invalidateOnRefresh: true,
+            toggleActions: 'play none reverse none' // Permet la réversibilité
           }
         })
       })
     }
+    */
 
     // Animations pour le formulaire de contact
     if (formRef.current) {
@@ -696,6 +697,7 @@ export default function Home() {
             className="relative w-full h-full flex items-center justify-center max-w-7xl"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={selectedImage}
               alt="Vue agrandie"

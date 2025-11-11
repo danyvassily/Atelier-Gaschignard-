@@ -100,6 +100,10 @@ const Navigation = () => {
                   height={96}
                   className="w-full h-full object-contain"
                   loading="eager"
+                  onError={(e) => {
+                    // Fallback si l'image ne charge pas
+                    console.error('Logo failed to load')
+                  }}
                 />
               </div>
             </a>
@@ -161,6 +165,10 @@ const Navigation = () => {
                   height={64}
                   className="w-full h-full object-contain"
                   loading="eager"
+                  onError={(e) => {
+                    // Fallback si l'image ne charge pas
+                    console.error('Logo failed to load')
+                  }}
                 />
               </div>
             </a>
