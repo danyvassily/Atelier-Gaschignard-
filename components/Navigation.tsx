@@ -1,135 +1,248 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
-import { gsap } from 'gsap'
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const pathname = usePathname()
+  const [activeSection, setActiveSection] = useState('accueil')
+
+  // Fonction pour scroller vers une section
+  const scrollToSection = (id: string, e?: React.MouseEvent<HTMLAnchorElement>) => {
+    e?.preventDefault()
+    const element = document.getElementById(id)
+    if (element) {
+      const offset = 80 // Hauteur de la navbar
+      const elementPosition = element.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - offset
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      })
+      setIsOpen(false)
+    }
+  }
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
+      
+      // Détecter la section active lors du scroll
+      const sections = ['accueil', 'a-propos', 'services', 'galerie', 'contact']
+      const scrollPosition = window.scrollY + 100
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sections[i])
+        if (section && section.offsetTop <= scrollPosition) {
+          setActiveSection(sections[i])
+          break
+        }
+      }
     }
     window.addEventListener('scroll', handleScroll)
+    handleScroll() // Appel initial pour définir la section active
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Fermer le menu mobile avec Escape
   useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false)
+    }
     if (isOpen) {
-      gsap.fromTo('.nav-menu-item', 
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, stagger: 0.1, duration: 0.4 }
-      )
+      document.addEventListener('keydown', handleEscape)
+      // Empêcher le scroll du body quand le menu est ouvert
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+      document.body.style.overflow = ''
     }
   }, [isOpen])
 
   const navItems = [
-    { href: '/', label: 'Accueil' },
-    { href: '/services', label: 'Services' },
-    { href: '/galerie', label: 'Galerie' },
-    { href: '/contact', label: 'Contact' },
+    { id: 'accueil', label: 'ACCUEIL' },
+    { id: 'services', label: 'SERVICES' },
+    { id: 'galerie', label: 'GALERIE' },
+    { id: 'contact', label: 'CONTACT' },
   ]
 
   return (
     <nav 
-      className={`fixed top-0 left-0 right-0 z-50 transition-smooth ${
-        isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-sm' : 'bg-transparent'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 ${
+        isScrolled 
+          ? 'bg-white/95 backdrop-blur-sm' 
+          : 'bg-transparent'
+      } transition-all duration-200`}
+      role="navigation"
+      aria-label="Navigation principale"
     >
       <div className="container-custom">
-        <div className="flex items-center justify-between h-20 md:h-24">
-          {/* Logo */}
-          <Link 
-            href="/" 
-            className="flex items-center space-x-3 z-50 relative"
-            onClick={() => setIsOpen(false)}
-          >
-            <div className="w-12 h-12 md:w-16 md:h-16 relative">
-              <Image 
-                src="/images/logo.png" 
-                alt="Atelier Gaschignard" 
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-            <span className="font-serif text-xl md:text-2xl text-primary-900">
-              Atelier Gaschignard
-            </span>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`text-sm uppercase tracking-wider transition-smooth ${
-                  pathname === item.href
-                    ? 'text-primary-900 border-b-2 border-primary-900 pb-1'
-                    : 'text-primary-700 hover:text-primary-900'
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
+        {/* Desktop & Tablette: Layout 3 colonnes */}
+        <div className="hidden md:grid md:grid-cols-3 items-center h-20 lg:h-24">
+          {/* Zone 1: Logo à gauche */}
+          <div className="flex items-center justify-start">
+            <a 
+              href="#accueil"
+              onClick={(e) => scrollToSection('accueil', e)}
+              className="flex items-center min-h-[44px] min-w-[44px] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)] focus:ring-offset-2 rounded"
+              aria-label="Retour à l'accueil"
+            >
+              <div className="h-20 w-20 lg:h-24 lg:w-24 relative flex-shrink-0">
+                <Image 
+                  src="/images/logo.png" 
+                  alt="Atelier Gaschignard" 
+                  width={96}
+                  height={96}
+                  className="object-contain"
+                  style={{ width: '100%', height: '100%' }}
+                  priority
+                />
+              </div>
+            </a>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden z-50 relative"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-          >
-            <div className="w-6 h-6 flex flex-col justify-center space-y-1.5">
-              <span 
-                className={`block h-0.5 w-6 bg-primary-900 transition-smooth ${
-                  isOpen ? 'rotate-45 translate-y-2' : ''
-                }`}
-              />
-              <span 
-                className={`block h-0.5 w-6 bg-primary-900 transition-smooth ${
-                  isOpen ? 'opacity-0' : ''
-                }`}
-              />
-              <span 
-                className={`block h-0.5 w-6 bg-primary-900 transition-smooth ${
-                  isOpen ? '-rotate-45 -translate-y-2' : ''
-                }`}
-              />
-            </div>
-          </button>
+          {/* Zone 2: Titre centré */}
+          <div className="flex items-center justify-center">
+            <h1 className="font-heading text-sm lg:text-base uppercase tracking-[0.05em] text-[var(--color-brand-primary)]">
+              Atelier Gaschignard
+            </h1>
+          </div>
+
+          {/* Zone 3: Menu à droite */}
+          <div className="flex items-center justify-end">
+            <ul className="flex items-center space-x-4 md:space-x-5 lg:space-x-8">
+              {navItems.map((item) => {
+                const isActive = activeSection === item.id
+                return (
+                  <li key={item.id}>
+                    <a
+                      href={`#${item.id}`}
+                      onClick={(e) => scrollToSection(item.id, e)}
+                      className={`
+                        font-heading text-xs lg:text-sm uppercase tracking-[0.1em] 
+                        nav-transition min-h-[44px] min-w-[44px] flex items-center justify-center
+                        focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)] focus:ring-offset-2 rounded
+                        ${isActive 
+                          ? 'text-[var(--color-brand-primary)] border-b border-[var(--color-brand-primary)] pb-1' 
+                          : 'text-[var(--color-brand-primary)] opacity-70 hover:opacity-100'
+                        }
+                      `}
+                      aria-current={isActive ? 'page' : undefined}
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
         </div>
 
-        {/* Mobile Menu */}
-        <div 
-          className={`md:hidden fixed inset-0 bg-white z-40 transition-smooth ${
-            isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-          }`}
-          style={{ top: '80px' }}
-        >
-          <div className="container-custom pt-12 pb-8">
-            <div className="flex flex-col space-y-6">
-              {navItems.map((item, index) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`nav-menu-item text-2xl uppercase tracking-wider transition-smooth ${
-                    pathname === item.href
-                      ? 'text-primary-900'
-                      : 'text-primary-700'
+        {/* Mobile: Layout 2 colonnes (logo + titre, menu toggle) */}
+        <div className="md:hidden grid grid-cols-2 items-center h-16 px-4">
+          {/* Logo + Titre à gauche */}
+          <div className="flex items-center space-x-2">
+            <a 
+              href="#accueil"
+              onClick={(e) => scrollToSection('accueil', e)}
+              className="flex items-center min-h-[44px] min-w-[44px] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)] focus:ring-offset-2 rounded"
+              aria-label="Retour à l'accueil"
+            >
+              <div className="h-16 w-16 relative flex-shrink-0">
+                <Image 
+                  src="/images/logo.png" 
+                  alt="Atelier Gaschignard" 
+                  width={64}
+                  height={64}
+                  className="object-contain"
+                  style={{ width: '100%', height: '100%' }}
+                  priority
+                />
+              </div>
+            </a>
+            <h1 className="font-heading text-xs uppercase tracking-[0.05em] text-[var(--color-brand-primary)]">
+              Atelier Gaschignard
+            </h1>
+          </div>
+
+          {/* Menu Toggle à droite */}
+          <div className="flex items-center justify-end">
+            <button
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)] focus:ring-offset-2 rounded"
+              onClick={() => setIsOpen(!isOpen)}
+              {...(isOpen && { 'aria-expanded': true })}
+              aria-label={isOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+              aria-controls="mobile-menu"
+            >
+              <div className="w-6 h-6 flex flex-col justify-center space-y-1.5">
+                <span 
+                  className={`block h-0.5 w-6 bg-[var(--color-brand-primary)] transition-all duration-200 ${
+                    isOpen ? 'rotate-45 translate-y-2' : ''
                   }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
+                  aria-hidden="true"
+                />
+                <span 
+                  className={`block h-0.5 w-6 bg-[var(--color-brand-primary)] transition-all duration-200 ${
+                    isOpen ? 'opacity-0' : ''
+                  }`}
+                  aria-hidden="true"
+                />
+                <span 
+                  className={`block h-0.5 w-6 bg-[var(--color-brand-primary)] transition-all duration-200 ${
+                    isOpen ? '-rotate-45 -translate-y-2' : ''
+                  }`}
+                  aria-hidden="true"
+                />
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu Panel */}
+        <div 
+          id="mobile-menu"
+          className={`md:hidden fixed inset-x-0 top-[64px] bottom-0 bg-white z-40 transition-all duration-200 ease-out ${
+            isOpen 
+              ? 'opacity-100 visible' 
+              : 'opacity-0 invisible pointer-events-none'
+          }`}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu de navigation mobile"
+        >
+          <div className="container-custom pt-8 pb-12">
+            <nav aria-label="Navigation mobile">
+              <ul className="flex flex-col space-y-4">
+                {navItems.map((item) => {
+                  const isActive = activeSection === item.id
+                  return (
+                    <li key={item.id}>
+                      <a
+                        href={`#${item.id}`}
+                        onClick={(e) => scrollToSection(item.id, e)}
+                        className={`
+                          font-heading text-xl uppercase tracking-[0.1em] 
+                          nav-transition min-h-[44px] flex items-center px-4 py-3
+                          focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)] focus:ring-offset-2 rounded
+                          ${isActive 
+                            ? 'text-[var(--color-brand-primary)] font-semibold' 
+                            : 'text-[var(--color-brand-primary)] opacity-70 hover:opacity-100'
+                          }
+                        `}
+                        aria-current={isActive ? 'page' : undefined}
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  )
+                })}
+              </ul>
+            </nav>
           </div>
         </div>
       </div>
@@ -138,4 +251,3 @@ const Navigation = () => {
 }
 
 export default Navigation
-
