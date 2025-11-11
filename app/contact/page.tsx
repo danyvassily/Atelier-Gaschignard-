@@ -103,10 +103,12 @@ export default function Contact() {
                   <h3 className="text-sm uppercase tracking-wider text-primary-600 mb-2">
                     Email
                   </h3>
-                  <p className="text-primary-900 text-lg">
-                    {/* À compléter */}
+                  <a 
+                    href="mailto:contact@ateliergaschignard.fr" 
+                    className="text-primary-900 text-lg hover:text-primary-700 transition-smooth"
+                  >
                     contact@ateliergaschignard.fr
-                  </p>
+                  </a>
                 </div>
                 <div>
                   <h3 className="text-sm uppercase tracking-wider text-primary-600 mb-2">
@@ -125,6 +127,19 @@ export default function Contact() {
                     {/* À compléter */}
                     Adresse à compléter
                   </p>
+                </div>
+                <div>
+                  <h3 className="text-sm uppercase tracking-wider text-primary-600 mb-2">
+                    Instagram
+                  </h3>
+                  <a 
+                    href="https://instagram.com/ateliergaschignard" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary-900 text-lg hover:text-primary-700 transition-smooth"
+                  >
+                    @ateliergaschignard
+                  </a>
                 </div>
               </div>
             </div>
