@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('accueil')
 
   // Fonction pour scroller vers une section
@@ -26,8 +25,6 @@ const Navigation = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
-      
       // Détecter la section active lors du scroll
       const sections = ['accueil', 'a-propos', 'services', 'galerie', 'contact']
       const scrollPosition = window.scrollY + 100
@@ -72,11 +69,7 @@ const Navigation = () => {
 
   return (
     <nav 
-      className={`fixed top-0 left-0 right-0 z-50 ${
-        isScrolled 
-          ? 'bg-white/95 backdrop-blur-sm' 
-          : 'bg-transparent'
-      } transition-all duration-200`}
+      className="fixed top-0 left-0 right-0 z-50 bg-white backdrop-blur-sm transition-all duration-200"
       role="navigation"
       aria-label="Navigation principale"
     >
