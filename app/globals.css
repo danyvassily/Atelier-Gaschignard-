@@ -91,6 +91,14 @@ img {
   display: none;
 }
 
+/* Performance optimizations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform, opacity;
+}
+
 /* Accessibility: Focus styles */
 *:focus-visible {
   outline: 2px solid var(--color-brand-primary);
@@ -148,4 +156,3 @@ textarea:focus-visible {
     transform: none !important;
   }
 }
-

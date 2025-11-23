@@ -1,15 +1,17 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import Image from 'next/image'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
 }
 
 export default function Home() {
+  const containerRef = useRef<HTMLDivElement>(null)
   const heroRef = useRef<HTMLDivElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
   const subtitleRef = useRef<HTMLParagraphElement>(null)
@@ -35,24 +37,27 @@ export default function Home() {
     const element = document.getElementById(id)
     if (element) {
       const offset = 80 // Hauteur de la navbar
-      const elementPosition = element.getBoundingClientRect().top
-      const offsetPosition = elementPosition + window.pageYOffset - offset
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
+      
+      // Utilisation de gsap pour le scroll smooth
+      gsap.to(window, {
+        duration: 1,
+        scrollTo: {
+          y: element,
+          offsetY: offset
+        },
+        ease: 'power3.inOut'
       })
     }
   }
 
-  useEffect(() => {
-    if (heroRef.current && titleRef.current && subtitleRef.current && ctaRef.current) {
-      // Définir l'état initial explicitement avec couleur blanche préservée
+  useGSAP(() => {
+    // Configuration initiale
+    if (titleRef.current && subtitleRef.current && ctaRef.current) {
       gsap.set([titleRef.current, subtitleRef.current, ctaRef.current], {
         opacity: 0,
         y: 30,
         color: '#ffffff',
-        force3D: true
+        force3D: true // Optimisation GPU
       })
       
       const tl = gsap.timeline()
@@ -80,127 +85,83 @@ export default function Home() {
         ease: 'power3.out',
         force3D: true
       }, '-=0.4')
-      
-      // S'assurer que l'opacité finale reste à 1
-      tl.call(() => {
-        gsap.set([titleRef.current, subtitleRef.current, ctaRef.current], {
+    }
+
+    // Optimisation des animations de liste avec ScrollTrigger.batch
+    // Services
+    ScrollTrigger.batch('.service-item', {
+      onEnter: batch => gsap.fromTo(batch, 
+        { opacity: 0, y: 40 },
+        { 
+          opacity: 1, 
+          y: 0, 
+          stagger: 0.15, 
+          duration: 0.8, 
+          ease: 'power3.out',
+          overwrite: true
+        }
+      ),
+      start: 'top 85%',
+      once: true // Animation jouée une seule fois pour la performance
+    })
+
+    // Galerie - Animation optimisée
+    ScrollTrigger.batch('.gallery-item', {
+      onEnter: batch => gsap.fromTo(batch,
+        { opacity: 0, scale: 0.95 }, // Scale moins agressif pour fluidité
+        {
           opacity: 1,
-          color: '#ffffff'
-        })
-      })
-    }
+          scale: 1,
+          stagger: 0.05, // Stagger plus rapide
+          duration: 0.5, // Durée réduite
+          ease: 'power2.out',
+          overwrite: true
+        }
+      ),
+      start: 'top 90%',
+      once: true
+    })
 
-    // Animations pour la section services
-    if (contentRef.current) {
-      const items = contentRef.current.querySelectorAll('.service-item')
-      items.forEach((item) => {
-        gsap.fromTo(item,
-          { opacity: 0, y: 40 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: item,
-              start: 'top 80%',
-              toggleActions: 'play none none none'
-            }
-          }
-        )
-      })
-    }
-
-    // Animations pour la galerie
-    if (galleryRef.current) {
-      const items = galleryRef.current.querySelectorAll('.gallery-item')
-      items.forEach((item, index) => {
-        // Animation d'entrée
-        gsap.fromTo(item,
-          { opacity: 0, scale: 0.9 },
-          {
-            opacity: 1,
-            scale: 1,
-            duration: 0.6,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: item,
-              start: 'top 85%',
-              toggleActions: 'play none none none'
-            },
-            delay: index * 0.1
-          }
-        )
-      })
-    }
-
-    // Animation de déstructuration avec parallaxe lors de la sortie de la section galerie
-    // Désactivée pour éviter que la galerie disparaisse au scroll arrière
-    // Si vous souhaitez réactiver cette animation, décommentez le code ci-dessous
-    /*
-    if (gallerySectionRef.current && galleryRef.current) {
-      const items = galleryRef.current.querySelectorAll('.gallery-item')
-      
-      items.forEach((item, index) => {
-        const speed = 0.2 + (index % 5) * 0.15
-        const rotation = (index % 2 === 0 ? 1 : -1) * (10 + (index % 4) * 8)
-        const xOffset = (index % 3 === 0 ? 1 : index % 3 === 1 ? -1 : 0) * (80 + (index % 5) * 40)
-        
-        gsap.to(item, {
-          y: (1 - speed) * 400,
-          x: xOffset,
-          rotation: rotation,
-          opacity: 0,
-          scale: 0.7,
-          ease: 'power2.in',
-          scrollTrigger: {
-            trigger: gallerySectionRef.current,
-            start: 'bottom top',
-            end: 'bottom top-=300',
-            scrub: 0.5,
-            invalidateOnRefresh: true,
-            toggleActions: 'play none reverse none' // Permet la réversibilité
-          }
-        })
-      })
-    }
-    */
-
-    // Animations pour le formulaire de contact
+    // Animations simples pour les autres sections
     if (formRef.current) {
       gsap.fromTo(formRef.current,
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: 0.3 }
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: formRef.current,
+            start: 'top 85%',
+            once: true
+          }
+        }
       )
     }
 
-    // Animations pour les sections hero
-    if (servicesHeroRef.current) {
-      gsap.fromTo(servicesHeroRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
-      )
-    }
+    // Animations Hero Sections
+    const heroes = [servicesHeroRef.current, galerieHeroRef.current, contactHeroRef.current]
+    heroes.forEach(hero => {
+      if (hero) {
+        gsap.fromTo(hero,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: hero,
+              start: 'top 85%',
+              once: true
+            }
+          }
+        )
+      }
+    })
 
-    if (galerieHeroRef.current) {
-      gsap.fromTo(galerieHeroRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
-      )
-    }
-
-    if (contactHeroRef.current) {
-      gsap.fromTo(contactHeroRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
-      )
-    }
-
-    // Nettoyage des ScrollTriggers au démontage
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
-    }
-  }, [])
+  }, { scope: containerRef }) // Scope important pour le nettoyage automatique
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -267,14 +228,14 @@ export default function Home() {
   ]
 
   return (
-    <div className="bg-black text-white">
+    <div ref={containerRef} className="bg-black text-white">
       {/* Hero Section - Accueil */}
       <section 
         id="accueil"
         ref={heroRef}
         className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden"
       >
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 gpu-accelerated">
           <Image
             src="/images/hero.jpg"
             alt="Atelier Gaschignard"
@@ -364,7 +325,7 @@ export default function Home() {
         className="relative py-12 md:py-16 px-4 bg-black"
       >
         <div className="container-custom">
-          <div className="relative w-full h-[50vh] min-h-[400px] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
+          <div className="relative w-full h-[50vh] min-h-[400px] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl gpu-accelerated">
             <Image
               src="/images/services-hero.jpg"
               alt="Services"
@@ -397,7 +358,7 @@ export default function Home() {
                 key={index}
                 className="service-item group"
               >
-                <div className="relative aspect-[4/3] mb-6 overflow-hidden rounded-lg">
+                <div className="relative aspect-[4/3] mb-6 overflow-hidden rounded-lg gpu-accelerated">
                   <Image
                     src={service.image}
                     alt={service.title}
@@ -435,7 +396,7 @@ export default function Home() {
                 { step: '02', title: 'Conception', desc: 'Création d\'un menu sur mesure' },
                 { step: '03', title: 'Réalisation', desc: 'Exécution avec excellence et précision' },
               ].map((item, index) => (
-                <div key={index} className="text-center">
+                <div key={index} className="text-center service-item">
                   <div className="text-6xl md:text-7xl font-serif text-white/20 mb-4">
                     {item.step}
                   </div>
@@ -458,7 +419,7 @@ export default function Home() {
         className="relative py-12 md:py-16 px-4 bg-black"
       >
         <div className="container-custom">
-          <div className="relative w-full h-[50vh] min-h-[400px] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
+          <div className="relative w-full h-[50vh] min-h-[400px] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl gpu-accelerated">
             <Image
               src="/images/page-accueil.jpg"
               alt="Galerie"
@@ -489,7 +450,7 @@ export default function Home() {
             {galleryImages.map((src, index) => (
               <div
                 key={`${src}-${index}`}
-                className="gallery-item relative aspect-square overflow-hidden group cursor-pointer"
+                className="gallery-item relative aspect-square overflow-hidden group cursor-pointer opacity-0 gpu-accelerated"
                 onClick={() => setSelectedImage(src)}
               >
                 <Image
@@ -517,7 +478,7 @@ export default function Home() {
         className="relative py-12 md:py-16 px-4 bg-black"
       >
         <div className="container-custom">
-          <div className="relative w-full h-[50vh] min-h-[400px] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
+          <div className="relative w-full h-[50vh] min-h-[400px] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl gpu-accelerated">
             <Image
               src="/images/contact-hero.jpg"
               alt="Contact"

@@ -1,47 +1,102 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import gsap from 'gsap'
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
+import { useGSAP } from '@gsap/react'
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollToPlugin)
+}
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('accueil')
+  const menuRef = useRef<HTMLDivElement>(null)
+  
   // Utiliser le logo à la racine de public pour éviter l'optimiseur Next.js
   const logoPath = '/logo.png'
+
+  // Animation du menu mobile avec useGSAP
+  useGSAP(() => {
+    if (isOpen) {
+      // Animation d'ouverture
+      gsap.to(menuRef.current, {
+        opacity: 1,
+        autoAlpha: 1,
+        duration: 0.3,
+        ease: 'power2.out'
+      })
+      
+      gsap.fromTo('.mobile-nav-item',
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.1,
+          duration: 0.4,
+          ease: 'power2.out',
+          delay: 0.1
+        }
+      )
+    } else {
+      // Animation de fermeture
+      gsap.to(menuRef.current, {
+        opacity: 0,
+        autoAlpha: 0,
+        duration: 0.2,
+        ease: 'power2.in'
+      })
+    }
+  }, { dependencies: [isOpen], scope: menuRef })
 
   // Fonction pour scroller vers une section
   const scrollToSection = (id: string, e?: React.MouseEvent<HTMLAnchorElement>) => {
     e?.preventDefault()
-    const element = document.getElementById(id)
-    if (element) {
-      const offset = 80 // Hauteur de la navbar
-      const elementPosition = element.getBoundingClientRect().top
-      const offsetPosition = elementPosition + window.pageYOffset - offset
+    
+    const offset = 80 // Hauteur de la navbar
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      })
-      setIsOpen(false)
-    }
+    gsap.to(window, {
+      duration: 1.2,
+      scrollTo: {
+        y: `#${id}`,
+        offsetY: offset
+      },
+      ease: 'power4.inOut'
+    })
+    
+    setIsOpen(false)
   }
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    
     const handleScroll = () => {
-      // Détecter la section active lors du scroll
-      const sections = ['accueil', 'a-propos', 'services', 'galerie', 'contact']
-      const scrollPosition = window.scrollY + 100
+      // Throttle pour optimiser les performances
+      if (timeoutId) return;
+      
+      timeoutId = setTimeout(() => {
+        // Détecter la section active lors du scroll
+        const sections = ['accueil', 'a-propos', 'services', 'galerie', 'contact']
+        const scrollPosition = window.scrollY + 100 // Marge de détection
 
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = document.getElementById(sections[i])
-        if (section && section.offsetTop <= scrollPosition) {
-          setActiveSection(sections[i])
-          break
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const section = document.getElementById(sections[i])
+          if (section && section.offsetTop <= scrollPosition) {
+            setActiveSection(sections[i])
+            break
+          }
         }
-      }
+        timeoutId = undefined!;
+      }, 100);
     }
+    
     window.addEventListener('scroll', handleScroll)
     handleScroll() // Appel initial pour définir la section active
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (timeoutId) clearTimeout(timeoutId)
+    }
   }, [])
 
   // Fermer le menu mobile avec Escape
@@ -142,23 +197,23 @@ const Navigation = () => {
           </div>
         </div>
 
-        {/* Mobile: Layout 2 colonnes (logo + titre, menu toggle) */}
-        <div className="md:hidden grid grid-cols-2 items-center h-16 px-4">
-          {/* Logo + Titre à gauche */}
-          <div className="flex items-center space-x-2">
+        {/* Mobile: Layout flex avec titre centré */}
+        <div className="md:hidden relative flex items-center justify-between h-16 px-4">
+          {/* Logo à gauche */}
+          <div className="flex-shrink-0 z-10">
             <a 
               href="#accueil"
               onClick={(e) => scrollToSection('accueil', e)}
               className="flex items-center min-h-[44px] min-w-[44px] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)] focus:ring-offset-2 rounded"
               aria-label="Retour à l'accueil"
             >
-              <div className="h-16 w-16 relative flex-shrink-0">
+              <div className="h-12 w-12 relative flex-shrink-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src={logoPath}
                   alt="Atelier Gaschignard" 
-                  width={64}
-                  height={64}
+                  width={48}
+                  height={48}
                   className="w-full h-full object-contain"
                   loading="eager"
                   // Désactiver srcset pour éviter l'optimiseur Next.js
@@ -169,13 +224,17 @@ const Navigation = () => {
                 />
               </div>
             </a>
-            <h1 className="font-heading text-xs uppercase tracking-[0.05em] text-[var(--color-brand-primary)]">
+          </div>
+
+          {/* Titre centré en absolu */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <h1 className="font-heading text-xs xs:text-sm uppercase tracking-[0.05em] text-[var(--color-brand-primary)] whitespace-nowrap">
               Atelier Gaschignard
             </h1>
           </div>
 
           {/* Menu Toggle à droite */}
-          <div className="flex items-center justify-end">
+          <div className="flex-shrink-0 z-10 flex justify-end">
             <button
               className="min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)] focus:ring-offset-2 rounded"
               onClick={() => setIsOpen(!isOpen)}
@@ -210,11 +269,8 @@ const Navigation = () => {
         {/* Mobile Menu Panel */}
         <div 
           id="mobile-menu"
-          className={`md:hidden fixed inset-x-0 top-[64px] bottom-0 bg-white z-40 transition-all duration-200 ease-out ${
-            isOpen 
-              ? 'opacity-100 visible' 
-              : 'opacity-0 invisible pointer-events-none'
-          }`}
+          ref={menuRef}
+          className="md:hidden fixed inset-x-0 top-[64px] bottom-0 bg-white z-40 opacity-0 invisible"
           role="dialog"
           aria-modal="true"
           aria-label="Menu de navigation mobile"
@@ -225,7 +281,7 @@ const Navigation = () => {
                 {navItems.map((item) => {
                   const isActive = activeSection === item.id
                   return (
-                    <li key={item.id}>
+                    <li key={item.id} className="mobile-nav-item opacity-0">
                       <a
                         href={`#${item.id}`}
                         onClick={(e) => scrollToSection(item.id, e)}
