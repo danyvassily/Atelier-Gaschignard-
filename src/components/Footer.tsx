@@ -10,9 +10,9 @@ const Footer = () => {
           {/* Logo en bas à gauche (remplace MAGENTA) */}
           <div className="flex items-center space-x-3">
             <div className="w-12 h-12 md:w-16 md:h-16 relative">
-              <img 
-                src="/images/logo.png" 
-                alt="Atelier Gaschignard" 
+              <img
+                src="/images/logo.webp"
+                alt="Atelier Gaschignard"
                 className="w-full h-full object-contain opacity-60 hover:opacity-100 transition-smooth"
               />
             </div>

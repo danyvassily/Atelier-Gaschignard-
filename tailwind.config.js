@@ -40,6 +40,7 @@ module.exports = {
         serif: ['var(--font-raleway)', 'Georgia', 'serif'],
         heading: ['var(--font-raleway)', 'var(--font-bebas)', 'sans-serif'],
         display: ['var(--font-bebas)', 'sans-serif'],
+        bebas: ['var(--font-bebas)', 'sans-serif'],
       },
       spacing: {
         '18': '4.5rem',

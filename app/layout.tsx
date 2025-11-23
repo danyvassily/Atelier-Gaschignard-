@@ -1,33 +1,40 @@
 import type { Metadata } from 'next'
-import { Inter, Playfair_Display, Raleway, Manrope } from 'next/font/google'
+import { Inter, Playfair_Display, Raleway, Manrope, Bebas_Neue } from 'next/font/google'
 import './globals.css'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
 })
 
-const playfair = Playfair_Display({ 
+const playfair = Playfair_Display({
   subsets: ['latin'],
   variable: '--font-playfair',
   display: 'swap',
 })
 
-const raleway = Raleway({ 
+const raleway = Raleway({
   subsets: ['latin'],
   variable: '--font-raleway',
   display: 'swap',
   weight: ['400', '500', '600', '700', '800', '900'],
 })
 
-const manrope = Manrope({ 
+const manrope = Manrope({
   subsets: ['latin'],
   variable: '--font-manrope',
   display: 'swap',
   weight: ['300', '400', '500', '600', '700', '800'],
+})
+
+const bebas = Bebas_Neue({
+  subsets: ['latin'],
+  variable: '--font-bebas',
+  display: 'swap',
+  weight: '400',
 })
 
 export const metadata: Metadata = {
@@ -42,7 +49,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="fr" className={`${inter.variable} ${playfair.variable} ${raleway.variable} ${manrope.variable}`}>
+    <html lang="fr" className={`${inter.variable} ${playfair.variable} ${raleway.variable} ${manrope.variable} ${bebas.variable}`}>
       <body>
         <Navigation />
         <main className="min-h-screen bg-black">
