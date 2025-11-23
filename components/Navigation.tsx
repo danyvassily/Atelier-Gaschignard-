@@ -3,7 +3,12 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import gsap from 'gsap'
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import { useGSAP } from '@gsap/react'
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollToPlugin)
+}
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -55,12 +60,15 @@ const Navigation = () => {
     const element = document.getElementById(targetId)
     
     if (element) {
-      const navHeight = 120 // Hauteur ajustée pour la nouvelle navbar plus haute
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY
+      const navHeight = 112 // Hauteur exacte de la navbar (h-28 = 112px)
       
-      window.scrollTo({
-        top: elementPosition - navHeight,
-        behavior: 'smooth'
+      gsap.to(window, {
+        duration: 1,
+        scrollTo: {
+          y: element,
+          offsetY: navHeight
+        },
+        ease: 'power3.inOut'
       })
     }
   }
