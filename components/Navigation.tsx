@@ -10,8 +10,8 @@ const Navigation = () => {
   const menuRef = useRef<HTMLDivElement>(null)
   const navRef = useRef<HTMLElement>(null)
   
-  // Force le chemin vers le logo à la racine de public qui semble plus fiable
-  const logoPath = '/logo.png'
+  // Utiliser le logo dans le dossier images qui semble mieux servi
+  const logoPath = '/images/logo.png'
 
   // Animation du menu mobile
   useGSAP(() => {
@@ -55,7 +55,7 @@ const Navigation = () => {
     const element = document.getElementById(targetId)
     
     if (element) {
-      const navHeight = 80
+      const navHeight = 100 // Hauteur ajustée pour la nouvelle navbar
       const elementPosition = element.getBoundingClientRect().top + window.scrollY
       
       window.scrollTo({
@@ -76,53 +76,66 @@ const Navigation = () => {
     <>
       <nav 
         ref={navRef}
-        className="fixed top-0 left-0 right-0 h-20 z-[100] bg-white shadow-md flex items-center justify-between px-4 md:px-8 lg:px-12 transition-all duration-300"
+        className="fixed top-0 left-0 right-0 h-24 z-[100] bg-white shadow-md flex items-center justify-between px-4 md:px-8 lg:px-12 transition-all duration-300"
         role="navigation"
       >
-        {/* Logo Section */}
-        <div className="flex-shrink-0 z-[101]">
+        {/* Left Section: Title */}
+        <div className="flex items-center w-1/3">
           <a 
             href="#accueil" 
             onClick={(e) => handleLinkClick(e, '#accueil')}
-            className="block relative h-12 w-auto aspect-square"
+            className="text-[#3d352e] font-serif text-lg md:text-xl lg:text-2xl tracking-wide hover:text-amber-700 transition-colors"
           >
-            {/* Utilisation d'une balise img standard pour éviter les problèmes d'optimisation Next.js */}
+            Atelier Gaschignard
+          </a>
+        </div>
+
+        {/* Center Section: Big Logo */}
+        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex justify-center items-center z-[102]">
+          <a 
+            href="#accueil" 
+            onClick={(e) => handleLinkClick(e, '#accueil')}
+            className="block relative h-20 w-auto aspect-square hover:scale-105 transition-transform duration-300"
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src={logoPath} 
-              alt="Atelier Gaschignard" 
+              alt="Logo Atelier Gaschignard" 
               className="h-full w-auto object-contain"
             />
           </a>
         </div>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-8 lg:space-x-12">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={(e) => handleLinkClick(e, link.href)}
-              className="text-[#3d352e] text-sm font-medium tracking-[0.15em] hover:text-amber-700 transition-colors duration-200 relative group py-2"
-            >
-              {link.name}
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-amber-700 transition-all duration-300 group-hover:w-full" />
-            </a>
-          ))}
-        </div>
-
-        {/* Mobile Burger Menu Button */}
-        <button 
-          className="md:hidden z-[101] p-2 focus:outline-none"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Menu"
-        >
-          <div className="w-6 h-5 flex flex-col justify-between">
-            <span className={`w-full h-0.5 bg-[#3d352e] transition-all duration-300 ${isOpen ? 'rotate-45 translate-y-2' : ''}`} />
-            <span className={`w-full h-0.5 bg-[#3d352e] transition-all duration-300 ${isOpen ? 'opacity-0' : ''}`} />
-            <span className={`w-full h-0.5 bg-[#3d352e] transition-all duration-300 ${isOpen ? '-rotate-45 -translate-y-2.5' : ''}`} />
+        {/* Right Section: Desktop Navigation & Mobile Burger */}
+        <div className="flex items-center justify-end w-1/3">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6 lg:space-x-10">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={(e) => handleLinkClick(e, link.href)}
+                className="text-[#3d352e] text-xs lg:text-sm font-medium tracking-[0.15em] hover:text-amber-700 transition-colors duration-200 relative group py-2"
+              >
+                {link.name}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-amber-700 transition-all duration-300 group-hover:w-full" />
+              </a>
+            ))}
           </div>
-        </button>
+
+          {/* Mobile Burger Menu Button */}
+          <button 
+            className="md:hidden z-[101] p-2 focus:outline-none"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Menu"
+          >
+            <div className="w-6 h-5 flex flex-col justify-between">
+              <span className={`w-full h-0.5 bg-[#3d352e] transition-all duration-300 ${isOpen ? 'rotate-45 translate-y-2' : ''}`} />
+              <span className={`w-full h-0.5 bg-[#3d352e] transition-all duration-300 ${isOpen ? 'opacity-0' : ''}`} />
+              <span className={`w-full h-0.5 bg-[#3d352e] transition-all duration-300 ${isOpen ? '-rotate-45 -translate-y-2.5' : ''}`} />
+            </div>
+          </button>
+        </div>
       </nav>
 
       {/* Mobile Fullscreen Menu Overlay */}
@@ -131,12 +144,22 @@ const Navigation = () => {
         className="fixed inset-0 bg-white z-[99] hidden flex-col items-center justify-center"
       >
         <div className="flex flex-col items-center space-y-8">
+          {/* Mobile Menu Logo */}
+          <div className="mb-8 relative h-24 w-24">
+             {/* eslint-disable-next-line @next/next/no-img-element */}
+             <img 
+              src={logoPath} 
+              alt="Atelier Gaschignard" 
+              className="h-full w-full object-contain"
+            />
+          </div>
+          
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
               onClick={(e) => handleLinkClick(e, link.href)}
-              className="mobile-link text-[#3d352e] text-3xl font-serif tracking-wider hover:text-amber-700 transition-colors"
+              className="mobile-link text-[#3d352e] text-2xl md:text-3xl font-serif tracking-wider hover:text-amber-700 transition-colors"
             >
               {link.name}
             </a>
