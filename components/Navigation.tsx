@@ -14,8 +14,8 @@ const Navigation = () => {
   const [activeSection, setActiveSection] = useState('accueil')
   const menuRef = useRef<HTMLDivElement>(null)
   
-  // Utiliser le logo à la racine de public pour éviter l'optimiseur Next.js
-  const logoPath = '/logo.png'
+  // Utiliser le logo dans le dossier images qui semble mieux servi
+  const logoPath = '/images/logo.png'
 
   // Animation du menu mobile avec useGSAP
   useGSAP(() => {
@@ -126,7 +126,7 @@ const Navigation = () => {
 
   return (
     <nav 
-      className="fixed top-0 left-0 right-0 z-50 bg-white backdrop-blur-sm transition-all duration-200"
+      className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm transition-all duration-200"
       role="navigation"
       aria-label="Navigation principale"
     >
