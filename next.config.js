@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Force redeploy to fix logo issue
   reactStrictMode: true,
   images: {
     domains: [],
