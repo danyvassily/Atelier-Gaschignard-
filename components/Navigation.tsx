@@ -91,8 +91,8 @@ const Navigation = () => {
         </div>
 
         {/* Center Section: Huge Logo */}
-        <div className="absolute left-1/2 top-0 transform -translate-x-1/2 flex justify-center items-start z-[102]">
-          <div className="relative h-40 w-auto aspect-square bg-white/0 rounded-b-full p-2">
+        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex justify-center items-center z-[102]">
+          <div className="relative h-40 w-auto aspect-square bg-white/0 p-2">
             <a 
               href="#accueil" 
               onClick={(e) => handleLinkClick(e, '#accueil')}
