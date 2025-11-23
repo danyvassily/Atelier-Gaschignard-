@@ -1,312 +1,149 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 import gsap from 'gsap'
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import { useGSAP } from '@gsap/react'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollToPlugin)
-}
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const [activeSection, setActiveSection] = useState('accueil')
   const menuRef = useRef<HTMLDivElement>(null)
+  const navRef = useRef<HTMLElement>(null)
   
-  // Utiliser le logo dans le dossier images qui semble mieux servi
-  const logoPath = '/images/logo.png'
+  // Force le chemin vers le logo à la racine de public qui semble plus fiable
+  const logoPath = '/logo.png'
 
-  // Animation du menu mobile avec useGSAP
+  // Animation du menu mobile
   useGSAP(() => {
     if (isOpen) {
+      // Bloquer le scroll
+      document.body.style.overflow = 'hidden'
+      
       // Animation d'ouverture
-      gsap.to(menuRef.current, {
+      const tl = gsap.timeline()
+      tl.to(menuRef.current, {
+        display: 'flex',
         opacity: 1,
-        autoAlpha: 1,
         duration: 0.3,
         ease: 'power2.out'
       })
-      
-      gsap.fromTo('.mobile-nav-item',
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.1,
-          duration: 0.4,
-          ease: 'power2.out',
-          delay: 0.1
-        }
+      .fromTo('.mobile-link',
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.4, ease: 'back.out(1.7)' },
+        '-=0.1'
       )
     } else {
+      // Débloquer le scroll
+      document.body.style.overflow = ''
+      
       // Animation de fermeture
       gsap.to(menuRef.current, {
         opacity: 0,
-        autoAlpha: 0,
-        duration: 0.2,
+        display: 'none',
+        duration: 0.3,
         ease: 'power2.in'
       })
     }
-  }, { dependencies: [isOpen], scope: menuRef })
+  }, { dependencies: [isOpen] })
 
-  // Fonction pour scroller vers une section
-  const scrollToSection = (id: string, e?: React.MouseEvent<HTMLAnchorElement>) => {
-    e?.preventDefault()
-    
-    const offset = 80 // Hauteur de la navbar
-
-    gsap.to(window, {
-      duration: 1.2,
-      scrollTo: {
-        y: `#${id}`,
-        offsetY: offset
-      },
-      ease: 'power4.inOut'
-    })
-    
+  // Gestion du scroll pour scroll smooth vers les ancres
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault()
     setIsOpen(false)
+    
+    const targetId = href.replace('#', '')
+    const element = document.getElementById(targetId)
+    
+    if (element) {
+      const navHeight = 80
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY
+      
+      window.scrollTo({
+        top: elementPosition - navHeight,
+        behavior: 'smooth'
+      })
+    }
   }
 
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-    
-    const handleScroll = () => {
-      // Throttle pour optimiser les performances
-      if (timeoutId) return;
-      
-      timeoutId = setTimeout(() => {
-        // Détecter la section active lors du scroll
-        const sections = ['accueil', 'a-propos', 'services', 'galerie', 'contact']
-        const scrollPosition = window.scrollY + 100 // Marge de détection
-
-        for (let i = sections.length - 1; i >= 0; i--) {
-          const section = document.getElementById(sections[i])
-          if (section && section.offsetTop <= scrollPosition) {
-            setActiveSection(sections[i])
-            break
-          }
-        }
-        timeoutId = undefined!;
-      }, 100);
-    }
-    
-    window.addEventListener('scroll', handleScroll)
-    handleScroll() // Appel initial pour définir la section active
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      if (timeoutId) clearTimeout(timeoutId)
-    }
-  }, [])
-
-  // Fermer le menu mobile avec Escape
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsOpen(false)
-    }
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape)
-      // Empêcher le scroll du body quand le menu est ouvert
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    return () => {
-      document.removeEventListener('keydown', handleEscape)
-      document.body.style.overflow = ''
-    }
-  }, [isOpen])
-
-  const navItems = [
-    { id: 'accueil', label: 'ACCUEIL' },
-    { id: 'services', label: 'SERVICES' },
-    { id: 'galerie', label: 'GALERIE' },
-    { id: 'contact', label: 'CONTACT' },
+  const navLinks = [
+    { name: 'ACCUEIL', href: '#accueil' },
+    { name: 'SERVICES', href: '#services' },
+    { name: 'GALERIE', href: '#galerie' },
+    { name: 'CONTACT', href: '#contact' },
   ]
 
   return (
-    <nav 
-      className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm transition-all duration-200"
-      role="navigation"
-      aria-label="Navigation principale"
-    >
-      <div className="container-custom">
-        {/* Desktop & Tablette: Layout 3 colonnes */}
-        <div className="hidden md:grid md:grid-cols-3 items-center h-20 lg:h-24">
-          {/* Zone 1: Logo à gauche */}
-          <div className="flex items-center justify-start">
-            <a 
-              href="#accueil"
-              onClick={(e) => scrollToSection('accueil', e)}
-              className="flex items-center min-h-[44px] min-w-[44px] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)] focus:ring-offset-2 rounded"
-              aria-label="Retour à l'accueil"
-            >
-              <div className="h-20 w-20 lg:h-24 lg:w-24 relative flex-shrink-0">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
-                  src={logoPath}
-                  alt="Atelier Gaschignard" 
-                  width={96}
-                  height={96}
-                  className="w-full h-full object-contain"
-                  loading="eager"
-                  // Désactiver srcset pour éviter l'optimiseur Next.js
-                  srcSet=""
-                  onError={(e) => {
-                    console.error('Logo failed to load from:', e.currentTarget.src)
-                  }}
-                />
-              </div>
-            </a>
-          </div>
-
-          {/* Zone 2: Titre centré */}
-          <div className="flex items-center justify-center">
-            <h1 className="font-heading text-sm lg:text-base uppercase tracking-[0.05em] text-[var(--color-brand-primary)]">
-              Atelier Gaschignard
-            </h1>
-          </div>
-
-          {/* Zone 3: Menu à droite */}
-          <div className="flex items-center justify-end">
-            <ul className="flex items-center space-x-4 md:space-x-5 lg:space-x-8">
-              {navItems.map((item) => {
-                const isActive = activeSection === item.id
-                return (
-                  <li key={item.id}>
-                    <a
-                      href={`#${item.id}`}
-                      onClick={(e) => scrollToSection(item.id, e)}
-                      className={`
-                        font-heading text-xs lg:text-sm uppercase tracking-[0.1em] 
-                        nav-transition min-h-[44px] min-w-[44px] flex items-center justify-center
-                        focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)] focus:ring-offset-2 rounded
-                        ${isActive 
-                          ? 'text-[var(--color-brand-primary)] border-b border-[var(--color-brand-primary)] pb-1' 
-                          : 'text-[var(--color-brand-primary)] opacity-70 hover:opacity-100'
-                        }
-                      `}
-                      aria-current={isActive ? 'page' : undefined}
-                    >
-                      {item.label}
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
+    <>
+      <nav 
+        ref={navRef}
+        className="fixed top-0 left-0 right-0 h-20 z-[100] bg-white shadow-md flex items-center justify-between px-4 md:px-8 lg:px-12 transition-all duration-300"
+        role="navigation"
+      >
+        {/* Logo Section */}
+        <div className="flex-shrink-0 z-[101]">
+          <a 
+            href="#accueil" 
+            onClick={(e) => handleLinkClick(e, '#accueil')}
+            className="block relative h-12 w-auto aspect-square"
+          >
+            {/* Utilisation d'une balise img standard pour éviter les problèmes d'optimisation Next.js */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img 
+              src={logoPath} 
+              alt="Atelier Gaschignard" 
+              className="h-full w-auto object-contain"
+            />
+          </a>
         </div>
 
-        {/* Mobile: Layout flex avec titre centré */}
-        <div className="md:hidden relative flex items-center justify-between h-16 px-4">
-          {/* Logo à gauche */}
-          <div className="flex-shrink-0 z-10">
-            <a 
-              href="#accueil"
-              onClick={(e) => scrollToSection('accueil', e)}
-              className="flex items-center min-h-[44px] min-w-[44px] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)] focus:ring-offset-2 rounded"
-              aria-label="Retour à l'accueil"
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center space-x-8 lg:space-x-12">
+          {navLinks.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              onClick={(e) => handleLinkClick(e, link.href)}
+              className="text-[#3d352e] text-sm font-medium tracking-[0.15em] hover:text-amber-700 transition-colors duration-200 relative group py-2"
             >
-              <div className="h-12 w-12 relative flex-shrink-0">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
-                  src={logoPath}
-                  alt="Atelier Gaschignard" 
-                  width={48}
-                  height={48}
-                  className="w-full h-full object-contain"
-                  loading="eager"
-                  // Désactiver srcset pour éviter l'optimiseur Next.js
-                  srcSet=""
-                  onError={(e) => {
-                    console.error('Logo failed to load from:', e.currentTarget.src)
-                  }}
-                />
-              </div>
+              {link.name}
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-amber-700 transition-all duration-300 group-hover:w-full" />
             </a>
-          </div>
-
-          {/* Titre centré en absolu */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            <h1 className="font-heading text-xs xs:text-sm uppercase tracking-[0.05em] text-[var(--color-brand-primary)] whitespace-nowrap">
-              Atelier Gaschignard
-            </h1>
-          </div>
-
-          {/* Menu Toggle à droite */}
-          <div className="flex-shrink-0 z-10 flex justify-end">
-            <button
-              className="min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)] focus:ring-offset-2 rounded"
-              onClick={() => setIsOpen(!isOpen)}
-              {...(isOpen && { 'aria-expanded': true })}
-              aria-label={isOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
-              aria-controls="mobile-menu"
-            >
-              <div className="w-6 h-6 flex flex-col justify-center space-y-1.5">
-                <span 
-                  className={`block h-0.5 w-6 bg-[var(--color-brand-primary)] transition-all duration-200 ${
-                    isOpen ? 'rotate-45 translate-y-2' : ''
-                  }`}
-                  aria-hidden="true"
-                />
-                <span 
-                  className={`block h-0.5 w-6 bg-[var(--color-brand-primary)] transition-all duration-200 ${
-                    isOpen ? 'opacity-0' : ''
-                  }`}
-                  aria-hidden="true"
-                />
-                <span 
-                  className={`block h-0.5 w-6 bg-[var(--color-brand-primary)] transition-all duration-200 ${
-                    isOpen ? '-rotate-45 -translate-y-2' : ''
-                  }`}
-                  aria-hidden="true"
-                />
-              </div>
-            </button>
-          </div>
+          ))}
         </div>
 
-        {/* Mobile Menu Panel */}
-        <div 
-          id="mobile-menu"
-          ref={menuRef}
-          className="md:hidden fixed inset-x-0 top-[64px] bottom-0 bg-white z-40 opacity-0 invisible"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Menu de navigation mobile"
+        {/* Mobile Burger Menu Button */}
+        <button 
+          className="md:hidden z-[101] p-2 focus:outline-none"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Menu"
         >
-          <div className="container-custom pt-8 pb-12">
-            <nav aria-label="Navigation mobile">
-              <ul className="flex flex-col space-y-4">
-                {navItems.map((item) => {
-                  const isActive = activeSection === item.id
-                  return (
-                    <li key={item.id} className="mobile-nav-item opacity-0">
-                      <a
-                        href={`#${item.id}`}
-                        onClick={(e) => scrollToSection(item.id, e)}
-                        className={`
-                          font-heading text-xl uppercase tracking-[0.1em] 
-                          nav-transition min-h-[44px] flex items-center px-4 py-3
-                          focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)] focus:ring-offset-2 rounded
-                          ${isActive 
-                            ? 'text-[var(--color-brand-primary)] font-semibold' 
-                            : 'text-[var(--color-brand-primary)] opacity-70 hover:opacity-100'
-                          }
-                        `}
-                        aria-current={isActive ? 'page' : undefined}
-                      >
-                        {item.label}
-                      </a>
-                    </li>
-                  )
-                })}
-              </ul>
-            </nav>
+          <div className="w-6 h-5 flex flex-col justify-between">
+            <span className={`w-full h-0.5 bg-[#3d352e] transition-all duration-300 ${isOpen ? 'rotate-45 translate-y-2' : ''}`} />
+            <span className={`w-full h-0.5 bg-[#3d352e] transition-all duration-300 ${isOpen ? 'opacity-0' : ''}`} />
+            <span className={`w-full h-0.5 bg-[#3d352e] transition-all duration-300 ${isOpen ? '-rotate-45 -translate-y-2.5' : ''}`} />
           </div>
+        </button>
+      </nav>
+
+      {/* Mobile Fullscreen Menu Overlay */}
+      <div 
+        ref={menuRef}
+        className="fixed inset-0 bg-white z-[99] hidden flex-col items-center justify-center"
+      >
+        <div className="flex flex-col items-center space-y-8">
+          {navLinks.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              onClick={(e) => handleLinkClick(e, link.href)}
+              className="mobile-link text-[#3d352e] text-3xl font-serif tracking-wider hover:text-amber-700 transition-colors"
+            >
+              {link.name}
+            </a>
+          ))}
         </div>
       </div>
-    </nav>
+    </>
   )
 }
 
