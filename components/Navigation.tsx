@@ -55,7 +55,7 @@ const Navigation = () => {
     const element = document.getElementById(targetId)
     
     if (element) {
-      const navHeight = 100 // Hauteur ajustée pour la nouvelle navbar
+      const navHeight = 120 // Hauteur ajustée pour la nouvelle navbar plus haute
       const elementPosition = element.getBoundingClientRect().top + window.scrollY
       
       window.scrollTo({
@@ -76,34 +76,36 @@ const Navigation = () => {
     <>
       <nav 
         ref={navRef}
-        className="fixed top-0 left-0 right-0 h-24 z-[100] bg-white shadow-md flex items-center justify-between px-4 md:px-8 lg:px-12 transition-all duration-300"
+        className="fixed top-0 left-0 right-0 h-28 z-[100] bg-white shadow-md flex items-center justify-between px-4 md:px-8 lg:px-12 transition-all duration-300"
         role="navigation"
       >
         {/* Left Section: Title */}
-        <div className="flex items-center w-1/3">
+        <div className="flex items-center w-1/3 relative z-[103]">
           <a 
             href="#accueil" 
             onClick={(e) => handleLinkClick(e, '#accueil')}
-            className="text-[#3d352e] font-serif text-lg md:text-xl lg:text-2xl tracking-wide hover:text-amber-700 transition-colors"
+            className="text-[#3d352e] font-serif text-base md:text-xl lg:text-2xl tracking-wide hover:text-amber-700 transition-colors leading-tight"
           >
-            Atelier Gaschignard
+            Atelier<br className="md:hidden" /> Gaschignard
           </a>
         </div>
 
-        {/* Center Section: Big Logo */}
-        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex justify-center items-center z-[102]">
-          <a 
-            href="#accueil" 
-            onClick={(e) => handleLinkClick(e, '#accueil')}
-            className="block relative h-20 w-auto aspect-square hover:scale-105 transition-transform duration-300"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
-              src={logoPath} 
-              alt="Logo Atelier Gaschignard" 
-              className="h-full w-auto object-contain"
-            />
-          </a>
+        {/* Center Section: Huge Logo */}
+        <div className="absolute left-1/2 top-0 transform -translate-x-1/2 flex justify-center items-start z-[102]">
+          <div className="relative h-40 w-auto aspect-square bg-white/0 rounded-b-full p-2">
+            <a 
+              href="#accueil" 
+              onClick={(e) => handleLinkClick(e, '#accueil')}
+              className="block relative h-full w-full hover:scale-105 transition-transform duration-300"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img 
+                src={logoPath} 
+                alt="Logo Atelier Gaschignard" 
+                className="h-full w-auto object-contain drop-shadow-sm"
+              />
+            </a>
+          </div>
         </div>
 
         {/* Right Section: Desktop Navigation & Mobile Burger */}
