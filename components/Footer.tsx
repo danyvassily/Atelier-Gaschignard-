@@ -15,14 +15,14 @@ const Footer = () => {
   ]
 
   return (
-    <footer 
+    <footer
       className="bg-[#0a0a0a] text-white relative"
       role="contentinfo"
       aria-label="Pied de page"
     >
       {/* Hairline divider en haut */}
       <div className="absolute top-0 left-0 right-0 h-px bg-white/12" aria-hidden="true" />
-      
+
       <div className="container-custom">
         {/* Desktop: Layout 3 colonnes */}
         <div className="hidden md:grid md:grid-cols-3 items-center py-4 lg:py-5 min-h-[64px] lg:min-h-[72px]">
@@ -71,11 +71,11 @@ const Footer = () => {
           {/* Colonne droite: Contact */}
           <div className="flex flex-col items-end justify-center space-y-1">
             <a
-              href="mailto:ateliergaschignard@gmail.com"
+              href="mailto:servicecommercial@ateliergaschignard.com"
               className="font-body text-xs lg:text-sm text-white/84 hover:text-white hover:underline decoration-white/40 decoration-[0.5px] underline-offset-4 transition-[color,text-decoration-color] duration-150 ease-out min-h-[44px] flex items-center focus:outline-none focus:ring-2 focus:ring-white/60 focus:ring-offset-2 focus:ring-offset-[#0a0a0a] rounded px-1"
-              aria-label="Envoyer un email à ateliergaschignard@gmail.com"
+              aria-label="Envoyer un email à servicecommercial@ateliergaschignard.com"
             >
-              ateliergaschignard@gmail.com
+              servicecommercial@ateliergaschignard.com
             </a>
             <a
               href="https://instagram.com/ateliergaschignard"
@@ -134,11 +134,11 @@ const Footer = () => {
           {/* Contact */}
           <div className="flex flex-col space-y-1.5">
             <a
-              href="mailto:ateliergaschignard@gmail.com"
+              href="mailto:servicecommercial@ateliergaschignard.com"
               className="font-body text-xs text-white/84 hover:text-white hover:underline decoration-white/40 decoration-[0.5px] underline-offset-4 transition-[color,text-decoration-color] duration-150 ease-out min-h-[44px] flex items-center px-1 focus:outline-none focus:ring-2 focus:ring-white/60 focus:ring-offset-2 focus:ring-offset-[#0a0a0a] rounded"
-              aria-label="Envoyer un email à ateliergaschignard@gmail.com"
+              aria-label="Envoyer un email à servicecommercial@ateliergaschignard.com"
             >
-              ateliergaschignard@gmail.com
+              servicecommercial@ateliergaschignard.com
             </a>
             <a
               href="https://instagram.com/ateliergaschignard"

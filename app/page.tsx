@@ -18,27 +18,21 @@ export default function Home() {
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: '',
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
   const galleryRef = useRef<HTMLDivElement>(null)
   const gallerySectionRef = useRef<HTMLElement>(null)
-  const formRef = useRef<HTMLFormElement>(null)
   const servicesHeroRef = useRef<HTMLDivElement>(null)
   const galerieHeroRef = useRef<HTMLDivElement>(null)
   const contactHeroRef = useRef<HTMLDivElement>(null)
+  const chefHeroRef = useRef<HTMLDivElement>(null)
+  const chefSectionRef = useRef<HTMLElement>(null)
 
   // Fonction pour scroller vers une section
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
       const offset = 80 // Hauteur de la navbar
-      
+
       // Utilisation de gsap pour le scroll smooth
       gsap.to(window, {
         duration: 1,
@@ -60,9 +54,9 @@ export default function Home() {
         color: '#ffffff',
         force3D: true // Optimisation GPU
       })
-      
+
       const tl = gsap.timeline()
-      
+
       tl.to(titleRef.current, {
         opacity: 1,
         y: 0,
@@ -71,33 +65,33 @@ export default function Home() {
         ease: 'power3.out',
         force3D: true
       })
-      .to(subtitleRef.current, {
-        opacity: 1,
-        y: 0,
-        color: '#ffffff',
-        duration: 0.8,
-        ease: 'power3.out',
-        force3D: true
-      }, '-=0.5')
-      .to(ctaRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        force3D: true
-      }, '-=0.4')
+        .to(subtitleRef.current, {
+          opacity: 1,
+          y: 0,
+          color: '#ffffff',
+          duration: 0.8,
+          ease: 'power3.out',
+          force3D: true
+        }, '-=0.5')
+        .to(ctaRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          force3D: true
+        }, '-=0.4')
     }
 
     // Optimisation des animations de liste avec ScrollTrigger.batch
     // Services
     ScrollTrigger.batch('.service-item', {
-      onEnter: batch => gsap.fromTo(batch, 
+      onEnter: batch => gsap.fromTo(batch,
         { opacity: 0, y: 40 },
-        { 
-          opacity: 1, 
-          y: 0, 
-          stagger: 0.15, 
-          duration: 0.8, 
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.15,
+          duration: 0.8,
           ease: 'power3.out',
           overwrite: true
         }
@@ -123,26 +117,8 @@ export default function Home() {
       once: true
     })
 
-    // Animations simples pour les autres sections
-    if (formRef.current) {
-      gsap.fromTo(formRef.current,
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: formRef.current,
-            start: 'top 85%',
-            once: true
-          }
-        }
-      )
-    }
-
     // Animations Hero Sections
-    const heroes = [servicesHeroRef.current, galerieHeroRef.current, contactHeroRef.current]
+    const heroes = [servicesHeroRef.current, galerieHeroRef.current, contactHeroRef.current, chefHeroRef.current]
     heroes.forEach(hero => {
       if (hero) {
         gsap.fromTo(hero,
@@ -162,55 +138,57 @@ export default function Home() {
       }
     })
 
+    // Animation Section Chef
+    if (chefSectionRef.current) {
+      gsap.fromTo(chefSectionRef.current,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: chefSectionRef.current,
+            start: 'top 80%',
+            once: true
+          }
+        }
+      )
+    }
+
   }, { scope: containerRef }) // Scope important pour le nettoyage automatique
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    
-    setTimeout(() => {
-      setIsSubmitting(false)
-      alert('Merci pour votre message. Nous vous répondrons dans les plus brefs délais.')
-      setFormData({ name: '', email: '', phone: '', message: '' })
-    }, 1000)
-  }
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
-  }
 
   const services = [
     {
-      title: 'Cuisine sur mesure',
-      description: 'Création de menus personnalisés selon vos préférences et événements',
-      image: '/images/food/Making off.jpg',
-    },
-    {
-      title: 'Événements privés',
-      description: 'Service traiteur pour vos réceptions et célébrations',
+      title: 'Prestation privée',
+      description: 'Je conçois des menus sur mesure pour vos déjeuners, dîners ou événements particuliers. Chaque prestation est pensée comme une expérience personnalisée, où la cuisine s’accorde à vos goûts, à la saison et à l’ambiance souhaitée.',
       image: '/images/food/Amuse bouche à l_oignon et pomme granny.jpg',
     },
     {
-      title: 'Ateliers culinaires',
-      description: 'Apprenez les techniques de la haute gastronomie',
+      title: 'Cours & Ateliers',
+      description: 'Je propose des ateliers culinaires pensés comme des moments de transmission et de convivialité. L’objectif : apprendre des techniques simples et précises, découvrir des associations de saveurs, et surtout, prendre plaisir à cuisiner.',
       image: '/images/food/Ravioli au gorgonzola et PDT 1.jpeg',
     },
     {
-      title: 'Consultation',
-      description: 'Conseil et accompagnement pour vos projets culinaires',
-      image: '/images/food/Poivrons.JPG',
-    },
+      title: 'Cuisine d\'exception',
+      description: 'Une expérience gastronomique unique à domicile, où chaque plat raconte une histoire et chaque saveur révèle une passion pour le terroir et la créativité.',
+      image: '/images/food/Making off.jpg',
+    }
   ]
 
   const galleryImages = [
+    '/images/food/imgnew1.jpeg',
+    '/images/food/imgnew2.jpeg',
+    '/images/food/imgnew3.jpeg',
+    '/images/food/imgnew4.jpeg',
+    '/images/food/imgnew5.jpeg',
+    '/images/food/imgnew6.jpeg',
     '/images/food/Oeuf parfait 1.jpg',
     '/images/food/Oeuf parfait 2.jpg',
     '/images/food/Ballotine de poulet 3.jpg',
-    '/images/food/Amuse bouche.jpeg',
     '/images/food/Amuse bouche à l_oignon et pomme granny.jpg',
+    '/images/food/Making off.jpg',
     '/images/food/Tiramisu 1.jpeg',
     '/images/food/Tiramisu 3.jpg',
     '/images/food/Steak de chou fleur 2.jpg',
@@ -231,7 +209,7 @@ export default function Home() {
   return (
     <div ref={containerRef} className="bg-black text-white">
       {/* Hero Section - Accueil */}
-      <section 
+      <section
         id="accueil"
         ref={heroRef}
         className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden"
@@ -247,15 +225,15 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/60" />
         </div>
-        
+
         <div className="relative z-10 container-custom text-center text-white hero-text-white">
-          <h1 
+          <h1
             ref={titleRef}
             className="font-serif text-5xl md:text-7xl lg:text-8xl mb-6 md:mb-8 drop-shadow-2xl text-shadow-hero-title opacity-0 hero-text-white"
           >
             Atelier Gaschignard
           </h1>
-          <p 
+          <p
             ref={subtitleRef}
             className="text-lg md:text-xl lg:text-2xl mb-8 md:mb-12 max-w-2xl mx-auto font-light drop-shadow-lg text-shadow-hero-subtitle opacity-0 hero-text-white"
           >
@@ -289,6 +267,45 @@ export default function Home() {
         </button>
       </section>
 
+      {/* Le Chef Section */}
+      <section id="le-chef" ref={chefSectionRef} className="py-20 md:py-32 bg-primary-950">
+        <div className="container-custom">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center">
+            <div className="relative aspect-[3/4] order-2 lg:order-1 max-w-md mx-auto w-full shadow-2xl overflow-hidden rounded-lg">
+              <Image
+                src="/images/chef.jpg"
+                alt="Le Chef"
+                fill
+                className="object-cover"
+                quality={95}
+              />
+            </div>
+            <div className="space-y-6 order-1 lg:order-2">
+              <h2 className="font-serif text-4xl md:text-5xl text-white mb-8">
+                Le Chef
+              </h2>
+              <div className="space-y-4 text-white/80 leading-relaxed text-lg">
+                <p>
+                  Avant de me consacrer pleinement à la cuisine, j’ai suivi des études à Sciences Po, puis travaillé plusieurs années dans l’humanitaire — notamment en Haïti, au Tchad et en République Centrafricaine, pour des ONG françaises et internationales. Ces expériences m’ont profondément marqué : elles m’ont appris le sens du partage, de la rencontre, et m’ont fait découvrir la richesse des cultures à travers leurs cuisines.
+                </p>
+                <p>
+                  De retour en France, j’ai choisi de revenir à ma passion première et de me former à la gastronomie en passant mon CAP cuisine, avant d’approfondir mes connaissances en œnologie avec les examens WSET. Je travaille aujourd’hui au restaurant Almanach Montmartre, dans le 18ᵉ arrondissement de Paris, où j’affine chaque jour ma technique et ma sensibilité culinaire.
+                </p>
+                <p>
+                  Tout au long de l’année, j’essaie également de me former auprès d’autres chefs, en passant quelques semaines dans différents restaurants, afin de découvrir de nouvelles approches, d’enrichir ma pratique et de nourrir mon inspiration.
+                </p>
+                <p>
+                  Avec mon activité de chef privé, je souhaite offrir une expérience sur mesure, à la croisée de la convivialité et de l’exigence gastronomique. J’aime concevoir des menus qui racontent une histoire, où chaque plat trouve son équilibre entre saisonnalité, terroir et créativité.
+                </p>
+                <p className="italic font-serif text-xl border-l-2 border-white/20 pl-6 mt-8">
+                  &ldquo;Plus qu’un simple repas, je veux créer des moments à part, où la cuisine devient un langage d’émotions et de partage.&rdquo;
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* About Section */}
       <section id="a-propos" className="py-20 md:pt-32 bg-black">
         <div className="container-custom">
@@ -298,18 +315,17 @@ export default function Home() {
                 L&apos;art de la gastronomie
               </h2>
               <p className="text-white/80 leading-relaxed text-lg">
-                {/* Le contenu sera ajouté après lecture des documents PDF/PPTX */}
-                Découvrez l&apos;excellence culinaire à travers nos créations uniques, 
+                Découvrez l&apos;excellence culinaire à travers nos créations uniques,
                 où chaque plat raconte une histoire et chaque saveur révèle notre passion.
               </p>
               <p className="text-white/80 leading-relaxed text-lg">
-                Notre atelier allie tradition et innovation pour vous offrir 
+                Notre atelier allie tradition et innovation pour vous offrir
                 une expérience gastronomique inoubliable.
               </p>
             </div>
             <div className="relative aspect-[4/3]">
               <Image
-                src="/images/food/Amuse bouche.jpeg"
+                src="/images/food/imgnew5.jpeg"
                 alt="Création culinaire"
                 fill
                 className="object-cover"
@@ -321,7 +337,7 @@ export default function Home() {
       </section>
 
       {/* Services Hero Section */}
-      <section 
+      <section
         ref={servicesHeroRef}
         className="relative py-12 md:py-16 px-4 bg-black"
       >
@@ -353,7 +369,7 @@ export default function Home() {
       <section id="services" className="py-20 md:py-32 bg-black">
         <div className="container-custom">
 
-          <div ref={contentRef} className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
+          <div ref={contentRef} className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
             {services.map((service, index) => (
               <div
                 key={index}
@@ -415,7 +431,7 @@ export default function Home() {
       </section>
 
       {/* Galerie Hero Section */}
-      <section 
+      <section
         ref={galerieHeroRef}
         className="relative py-12 md:py-16 px-4 bg-black"
       >
@@ -474,7 +490,7 @@ export default function Home() {
       </section>
 
       {/* Contact Hero Section */}
-      <section 
+      <section
         ref={contactHeroRef}
         className="relative py-12 md:py-16 px-4 bg-black"
       >
@@ -506,141 +522,45 @@ export default function Home() {
       <section id="contact" className="py-20 md:py-32 bg-black">
         <div className="container-custom">
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20">
-            {/* Contact Info */}
-            <div className="space-y-8">
-              <div>
-                <h3 className="font-serif text-3xl md:text-4xl text-white mb-6">
-                  Prenons contact
-                </h3>
-                <p className="text-white/80 leading-relaxed text-lg mb-8">
-                  Nous serions ravis d&apos;échanger avec vous sur votre projet culinaire.
-                  N&apos;hésitez pas à nous contacter pour toute demande.
-                </p>
-              </div>
+          <div className="max-w-4xl mx-auto text-center">
+            <h3 className="font-serif text-3xl md:text-4xl text-white mb-8">
+              Prenons contact
+            </h3>
+            <p className="text-white/80 leading-relaxed text-lg mb-12">
+              Nous serions ravis d&apos;échanger avec vous sur votre projet culinaire.
+              N&apos;hésitez pas à nous contacter via nos réseaux ou par email.
+            </p>
 
-              <div className="space-y-6">
-                <div>
-                  <h4 className="text-sm uppercase tracking-wider text-white/60 mb-2">
-                    Email
-                  </h4>
-                  <a 
-                    href="mailto:contact@ateliergaschignard.fr" 
-                    className="text-white text-lg hover:text-white/80 transition-smooth"
-                  >
-                    contact@ateliergaschignard.fr
-                  </a>
-                </div>
-                <div>
-                  <h4 className="text-sm uppercase tracking-wider text-white/60 mb-2">
-                    Téléphone
-                  </h4>
-                  <p className="text-white text-lg">
-                    +33 (0) X XX XX XX XX
-                  </p>
-                </div>
-                <div>
-                  <h4 className="text-sm uppercase tracking-wider text-white/60 mb-2">
-                    Adresse
-                  </h4>
-                  <p className="text-white text-lg">
-                    Adresse à compléter
-                  </p>
-                </div>
-                <div>
-                  <h4 className="text-sm uppercase tracking-wider text-white/60 mb-2">
-                    Instagram
-                  </h4>
-                  <a 
-                    href="https://instagram.com/ateliergaschignard" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-white text-lg hover:text-white/80 transition-smooth"
-                  >
-                    @ateliergaschignard
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* Contact Form */}
-            <div>
-              <form
-                ref={formRef}
-                onSubmit={handleSubmit}
-                className="space-y-6"
+            <div className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-24">
+              {/* Instagram */}
+              <a
+                href="https://instagram.com/ateliergaschignard"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col items-center space-y-4 transition-smooth"
               >
-                <div>
-                  <label htmlFor="name" className="block text-sm uppercase tracking-wider text-white/80 mb-2">
-                    Nom *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-white/20 bg-black/50 text-white placeholder-white/50 focus:outline-none focus:border-white/50 transition-smooth"
-                    placeholder="Votre nom"
-                  />
+                <div className="w-16 h-16 flex items-center justify-center border border-white/20 rounded-full group-hover:border-white/50 group-hover:bg-white/5 transition-smooth">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                 </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-sm uppercase tracking-wider text-white/80 mb-2">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-white/20 bg-black/50 text-white placeholder-white/50 focus:outline-none focus:border-white/50 transition-smooth"
-                    placeholder="votre@email.com"
-                  />
+                <div className="text-center">
+                  <h4 className="text-sm uppercase tracking-wider text-white/60 mb-1">Instagram</h4>
+                  <p className="text-white text-xl font-medium">@ateliergaschignard</p>
                 </div>
+              </a>
 
-                <div>
-                  <label htmlFor="phone" className="block text-sm uppercase tracking-wider text-white/80 mb-2">
-                    Téléphone
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-white/20 bg-black/50 text-white placeholder-white/50 focus:outline-none focus:border-white/50 transition-smooth"
-                    placeholder="+33 (0) X XX XX XX XX"
-                  />
+              {/* Email */}
+              <a
+                href="mailto:servicecommercial@ateliergaschignard.com"
+                className="group flex flex-col items-center space-y-4 transition-smooth"
+              >
+                <div className="w-16 h-16 flex items-center justify-center border border-white/20 rounded-full group-hover:border-white/50 group-hover:bg-white/5 transition-smooth">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                 </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm uppercase tracking-wider text-white/80 mb-2">
-                    Message *
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows={6}
-                    className="w-full px-4 py-3 border border-white/20 bg-black/50 text-white placeholder-white/50 focus:outline-none focus:border-white/50 transition-smooth resize-none"
-                    placeholder="Votre message..."
-                  />
+                <div className="text-center">
+                  <h4 className="text-sm uppercase tracking-wider text-white/60 mb-1">Email</h4>
+                  <p className="text-white text-xl font-medium">servicecommercial@ateliergaschignard.com</p>
                 </div>
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full px-8 py-4 bg-white text-black uppercase tracking-wider text-sm font-medium hover:bg-white/90 transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? 'Envoi en cours...' : 'Envoyer le message'}
-                </button>
-              </form>
+              </a>
             </div>
           </div>
         </div>
@@ -655,7 +575,7 @@ export default function Home() {
           className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
           onClick={() => setSelectedImage(null)}
         >
-          <div 
+          <div
             className="relative w-full h-full flex items-center justify-center max-w-7xl"
             onClick={(e) => e.stopPropagation()}
           >

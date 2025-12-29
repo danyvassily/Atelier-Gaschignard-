@@ -34,10 +34,10 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
+
     // Ici, vous pouvez ajouter la logique d'envoi du formulaire
     // Par exemple, avec une API route Next.js ou un service externe
-    
+
     setTimeout(() => {
       setIsSubmitting(false)
       alert('Merci pour votre message. Nous vous répondrons dans les plus brefs délais.')
@@ -55,7 +55,7 @@ export default function Contact() {
   return (
     <div className="pt-20 md:pt-24">
       {/* Hero Section */}
-      <section 
+      <section
         ref={heroRef}
         className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden"
       >
@@ -70,7 +70,7 @@ export default function Contact() {
           />
           <div className="absolute inset-0 bg-black/50" />
         </div>
-        
+
         <div className="relative z-10 container-custom text-center text-white">
           <h1 className="font-serif text-5xl md:text-7xl mb-6">
             Contact
@@ -103,11 +103,11 @@ export default function Contact() {
                   <h3 className="text-sm uppercase tracking-wider text-primary-600 mb-2">
                     Email
                   </h3>
-                  <a 
-                    href="mailto:contact@ateliergaschignard.fr" 
+                  <a
+                    href="mailto:servicecommercial@ateliergaschignard.com"
                     className="text-primary-900 text-lg hover:text-primary-700 transition-smooth"
                   >
-                    contact@ateliergaschignard.fr
+                    servicecommercial@ateliergaschignard.com
                   </a>
                 </div>
                 <div>
@@ -132,8 +132,8 @@ export default function Contact() {
                   <h3 className="text-sm uppercase tracking-wider text-primary-600 mb-2">
                     Instagram
                   </h3>
-                  <a 
-                    href="https://instagram.com/ateliergaschignard" 
+                  <a
+                    href="https://instagram.com/ateliergaschignard"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-primary-900 text-lg hover:text-primary-700 transition-smooth"
