@@ -44,6 +44,30 @@ export default function Galerie() {
     }
   }, [])
 
+  // Gestion de la fermeture de la lightbox avec Échap et Retour
+  useEffect(() => {
+    if (selectedImage) {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setSelectedImage(null)
+      }
+
+      // Ajouter une entrée dans l'historique pour permettre le "back"
+      window.history.pushState({ lightbox: true }, '')
+
+      const handlePopState = () => {
+        setSelectedImage(null)
+      }
+
+      window.addEventListener('keydown', handleKeyDown)
+      window.addEventListener('popstate', handlePopState)
+
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown)
+        window.removeEventListener('popstate', handlePopState)
+      }
+    }
+  }, [selectedImage])
+
   // Liste des images de la galerie
   const galleryImages = [
     '/images/food/Oeuf parfait 1.jpg',
@@ -71,7 +95,7 @@ export default function Galerie() {
   return (
     <div className="pt-20 md:pt-24">
       {/* Hero Section */}
-      <section 
+      <section
         ref={heroRef}
         className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden"
       >
@@ -86,7 +110,7 @@ export default function Galerie() {
           />
           <div className="absolute inset-0 bg-black/50" />
         </div>
-        
+
         <div className="relative z-10 container-custom text-center text-white">
           <h1 className="font-serif text-5xl md:text-7xl mb-6">
             Galerie
@@ -128,7 +152,7 @@ export default function Galerie() {
       {/* Lightbox Modal */}
       {selectedImage && (
         <div
-          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
+          className="fixed inset-0 z-[110] bg-black/95 flex items-center justify-center p-4"
           onClick={() => setSelectedImage(null)}
         >
           <div className="relative max-w-6xl max-h-[90vh] w-full h-full">
@@ -141,11 +165,11 @@ export default function Galerie() {
             />
             <button
               onClick={() => setSelectedImage(null)}
-              className="absolute top-4 right-4 text-white hover:text-primary-200 transition-smooth"
+              className="absolute top-6 right-6 text-white hover:bg-white hover:text-black transition-all duration-300 z-50 bg-black/60 rounded-full p-3 backdrop-blur-sm border border-white/20 shadow-xl"
               aria-label="Fermer"
             >
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg className="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>

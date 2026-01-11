@@ -105,7 +105,7 @@ export default function Contact() {
                   </h3>
                   <a
                     href="mailto:servicecommercial@ateliergaschignard.com"
-                    className="text-primary-900 text-lg hover:text-primary-700 transition-smooth"
+                    className="text-primary-900 text-base md:text-lg hover:text-primary-700 transition-smooth break-all px-1"
                   >
                     servicecommercial@ateliergaschignard.com
                   </a>
@@ -136,7 +136,7 @@ export default function Contact() {
                     href="https://instagram.com/ateliergaschignard"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-primary-900 text-lg hover:text-primary-700 transition-smooth"
+                    className="text-primary-900 text-base md:text-lg hover:text-primary-700 transition-smooth"
                   >
                     @ateliergaschignard
                   </a>

@@ -89,8 +89,8 @@ const Navigation = () => {
         className="fixed top-0 left-0 right-0 h-28 z-[100] bg-white shadow-md flex items-center justify-between px-4 md:px-8 lg:px-12 transition-all duration-300"
         role="navigation"
       >
-        {/* Left Section: Title */}
-        <div className="flex items-center w-1/3 relative z-[103]">
+        {/* Left Section: Title - Hidden on mobile to avoid duplication with center logo */}
+        <div className="hidden md:flex items-center w-1/3 relative z-[103]">
           <a
             href="#accueil"
             onClick={(e) => handleLinkClick(e, '#accueil')}

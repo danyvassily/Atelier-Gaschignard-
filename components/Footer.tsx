@@ -135,7 +135,7 @@ const Footer = () => {
           <div className="flex flex-col space-y-1.5">
             <a
               href="mailto:servicecommercial@ateliergaschignard.com"
-              className="font-body text-xs text-white/84 hover:text-white hover:underline decoration-white/40 decoration-[0.5px] underline-offset-4 transition-[color,text-decoration-color] duration-150 ease-out min-h-[44px] flex items-center px-1 focus:outline-none focus:ring-2 focus:ring-white/60 focus:ring-offset-2 focus:ring-offset-[#0a0a0a] rounded"
+              className="font-body text-xs lg:text-sm text-white/84 hover:text-white hover:underline decoration-white/40 decoration-[0.5px] underline-offset-4 transition-[color,text-decoration-color] duration-150 ease-out min-h-[44px] flex items-center focus:outline-none focus:ring-2 focus:ring-white/60 focus:ring-offset-2 focus:ring-offset-[#0a0a0a] rounded px-1 break-all"
               aria-label="Envoyer un email à servicecommercial@ateliergaschignard.com"
             >
               servicecommercial@ateliergaschignard.com

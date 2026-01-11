@@ -68,7 +68,7 @@ export default function Services() {
   return (
     <div className="pt-20 md:pt-24">
       {/* Hero Section */}
-      <section 
+      <section
         ref={heroRef}
         className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden"
       >
@@ -83,7 +83,7 @@ export default function Services() {
           />
           <div className="absolute inset-0 bg-black/50" />
         </div>
-        
+
         <div className="relative z-10 container-custom text-center text-white">
           <h1 className="font-serif text-5xl md:text-7xl mb-6">
             Nos Services
@@ -141,7 +141,7 @@ export default function Services() {
             {[
               { step: '01', title: 'Consultation', desc: 'Échange sur vos besoins et vos attentes' },
               { step: '02', title: 'Conception', desc: 'Création d\'un menu sur mesure' },
-              { step: '03', title: 'Réalisation', desc: 'Exécution avec excellence et précision' },
+              { step: '03', title: 'Réalisation', desc: 'Une exécution précise, portée par l’exigence du détail' },
             ].map((item, index) => (
               <div key={index} className="text-center">
                 <div className="text-6xl md:text-7xl font-serif text-primary-200 mb-4">

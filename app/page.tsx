@@ -158,6 +158,30 @@ export default function Home() {
 
   }, { scope: containerRef }) // Scope important pour le nettoyage automatique
 
+  // Gestion de la fermeture de la lightbox avec Échap et Retour
+  useGSAP(() => {
+    if (selectedImage) {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setSelectedImage(null)
+      }
+
+      // Ajouter une entrée dans l'historique pour permettre le "back"
+      window.history.pushState({ lightbox: true }, '')
+
+      const handlePopState = () => {
+        setSelectedImage(null)
+      }
+
+      window.addEventListener('keydown', handleKeyDown)
+      window.addEventListener('popstate', handlePopState)
+
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown)
+        window.removeEventListener('popstate', handlePopState)
+        // Ne pas faire history.back() ici car ça pourrait créer des boucles si non géré prudemment
+      }
+    }
+  }, { dependencies: [selectedImage] })
 
   const services = [
     {
@@ -411,7 +435,7 @@ export default function Home() {
               {[
                 { step: '01', title: 'Consultation', desc: 'Échange sur vos besoins et vos attentes' },
                 { step: '02', title: 'Conception', desc: 'Création d\'un menu sur mesure' },
-                { step: '03', title: 'Réalisation', desc: 'Exécution avec excellence et précision' },
+                { step: '03', title: 'Réalisation', desc: 'Une exécution précise, portée par l’exigence du détail' },
               ].map((item, index) => (
                 <div key={index} className="text-center service-item">
                   <div className="text-6xl md:text-7xl font-serif text-white/20 mb-4">
@@ -544,7 +568,7 @@ export default function Home() {
                 </div>
                 <div className="text-center">
                   <h4 className="text-sm uppercase tracking-wider text-white/60 mb-1">Instagram</h4>
-                  <p className="text-white text-xl font-medium">@ateliergaschignard</p>
+                  <p className="text-white text-lg font-medium">@ateliergaschignard</p>
                 </div>
               </a>
 
@@ -558,7 +582,7 @@ export default function Home() {
                 </div>
                 <div className="text-center">
                   <h4 className="text-sm uppercase tracking-wider text-white/60 mb-1">Email</h4>
-                  <p className="text-white text-xl font-medium">servicecommercial@ateliergaschignard.com</p>
+                  <p className="text-white text-lg font-medium break-all px-2">servicecommercial@ateliergaschignard.com</p>
                 </div>
               </a>
             </div>
@@ -572,7 +596,7 @@ export default function Home() {
           les problèmes de dimensionnement avec fill */}
       {selectedImage && (
         <div
-          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
+          className="fixed inset-0 z-[110] bg-black/95 flex items-center justify-center p-4"
           onClick={() => setSelectedImage(null)}
         >
           <div
@@ -595,11 +619,11 @@ export default function Home() {
                 e.stopPropagation()
                 setSelectedImage(null)
               }}
-              className="absolute top-4 right-4 text-white hover:text-primary-200 transition-smooth z-10 bg-black/50 rounded-full p-2"
+              className="absolute top-6 right-6 text-white hover:bg-white hover:text-black transition-all duration-300 z-50 bg-black/60 rounded-full p-3 backdrop-blur-sm border border-white/20 shadow-xl"
               aria-label="Fermer"
             >
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg className="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
