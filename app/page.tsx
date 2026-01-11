@@ -574,7 +574,7 @@ export default function Home() {
 
               {/* Email */}
               <a
-                href="mailto:servicecommercial@ateliergaschignard.com"
+                href="mailto:contact@ateliergaschignard.com"
                 className="group flex flex-col items-center space-y-4 transition-smooth"
               >
                 <div className="w-16 h-16 flex items-center justify-center border border-white/20 rounded-full group-hover:border-white/50 group-hover:bg-white/5 transition-smooth">
@@ -582,7 +582,7 @@ export default function Home() {
                 </div>
                 <div className="text-center">
                   <h4 className="text-sm uppercase tracking-wider text-white/60 mb-1">Email</h4>
-                  <p className="text-white text-lg font-medium break-all px-2">servicecommercial@ateliergaschignard.com</p>
+                  <p className="text-white text-lg font-medium break-all px-2">contact@ateliergaschignard.com</p>
                 </div>
               </a>
             </div>

@@ -34,7 +34,7 @@ export const content = {
       title: 'CONTACT',
       // Message d'intention exact du PPTX
       message: 'Texte exact FR du PPTX - Message d\'intention',
-      email: 'ateliergaschignard@gmail.com',
+      email: 'contact@ateliergaschignard.com',
       instagram: '@ateliergaschignard',
     },
   },
@@ -62,7 +62,7 @@ export const content = {
     contact: {
       title: 'CONTACT',
       message: 'English text from PPTX - Intent message',
-      email: 'ateliergaschignard@gmail.com',
+      email: 'contact@ateliergaschignard.com',
       instagram: '@ateliergaschignard',
     },
   },

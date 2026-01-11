@@ -73,11 +73,11 @@ const Contact = () => {
             {/* Email */}
             <div className="space-y-4">
               <a
-                href="mailto:servicecommercial@ateliergaschignard.com"
+                href="mailto:contact@ateliergaschignard.com"
                 className="text-xl md:text-2xl hover:opacity-80 transition-smooth inline-block"
                 style={{ color: 'var(--color-brand-primary)' }}
               >
-                servicecommercial@ateliergaschignard.com
+                contact@ateliergaschignard.com
               </a>
             </div>
 

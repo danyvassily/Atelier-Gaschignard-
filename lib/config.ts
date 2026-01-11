@@ -8,7 +8,7 @@ export const siteConfig = {
     // À compléter avec les réseaux sociaux si disponibles
   },
   contact: {
-    email: '', // À compléter depuis les documents
+    email: 'contact@ateliergaschignard.com',
     phone: '', // À compléter depuis les documents
     address: '', // À compléter depuis les documents
   },
