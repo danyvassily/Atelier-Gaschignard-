@@ -165,7 +165,7 @@ export default function Galerie() {
             />
             <button
               onClick={() => setSelectedImage(null)}
-              className="absolute top-1/2 -translate-y-1/2 right-4 md:right-8 text-white hover:bg-white hover:text-black transition-all duration-300 z-50 bg-black/60 rounded-full p-3 backdrop-blur-sm border border-white/20 shadow-xl"
+              className="absolute top-1/2 -translate-y-1/2 right-4 md:right-8 text-white hover:bg-white hover:text-black active:scale-90 transition-all duration-300 z-50 bg-black/60 rounded-full p-4 md:p-3 backdrop-blur-sm border border-white/20 shadow-xl min-w-[64px] min-h-[64px] md:min-w-0 md:min-h-0 flex items-center justify-center"
               aria-label="Fermer"
             >
               <svg className="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
