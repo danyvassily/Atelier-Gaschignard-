@@ -13,7 +13,7 @@ export const content = {
         // Continuer avec tous les paragraphes du PPTX
       ],
     },
-    
+
     // Page SERVICES
     services: {
       title: 'SERVICES',
@@ -28,17 +28,17 @@ export const content = {
         text: 'Texte exact FR du PPTX - Section "Prestation privée"',
       },
     },
-    
+
     // Page CONTACT
     contact: {
       title: 'CONTACT',
       // Message d'intention exact du PPTX
       message: 'Texte exact FR du PPTX - Message d\'intention',
-      email: 'contact@ateliergaschignard.com',
+      email: 'contact@ateliergaschignard.fr',
       instagram: '@ateliergaschignard',
     },
   },
-  
+
   // EN préparé mais non exposé (non activé)
   en: {
     leChef: {
@@ -62,7 +62,7 @@ export const content = {
     contact: {
       title: 'CONTACT',
       message: 'English text from PPTX - Intent message',
-      email: 'contact@ateliergaschignard.com',
+      email: 'contact@ateliergaschignard.fr',
       instagram: '@ateliergaschignard',
     },
   },
