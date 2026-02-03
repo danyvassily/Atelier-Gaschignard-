@@ -104,10 +104,10 @@ export default function Contact() {
                     Email
                   </h3>
                   <a
-                    href="mailto:contact@ateliergaschignard.com"
+                    href="mailto:contact@ateliergaschignard.fr"
                     className="text-primary-900 text-base md:text-lg hover:text-primary-700 transition-smooth break-all px-1"
                   >
-                    contact@ateliergaschignard.com
+                    contact@ateliergaschignard.fr
                   </a>
                 </div>
                 <div>
